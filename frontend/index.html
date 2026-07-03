@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>TraderOS AI</title>
+    </head>
+    <script src="script.js"></script>
+    <body>
+        <h1>Welcome to TraderOS AI</h1>
+        <p>India's AI Platform for Smart Traders</p>
+        <button onclick="welcome()">Start Free</button>
+        <h2>Risk Calculator</h2>
+
+<input type="number" id="capital" placeholder="Enter Capital">
+
+<input type="number" id="risk" placeholder="Risk %">
+
+<br><br>
+
+<button onclick="calculateRisk()">Calculate</button>
+
+<h3 id="result"></h3>
+<h2>Position Size Calculator</h2>
+
+<input type="number" id="capital2" placeholder="Capital">
+
+<input type="number" id="risk2" placeholder="Risk %">
+
+<input type="number" id="entry" placeholder="Entry Price">
+
+<input type="number" id="stoploss" placeholder="Stop Loss">
+
+<br><br>
+
+<button onclick="calculatePosition()">Calculate Position</button>
+
+<h3 id="positionResult"></h3>
+
+<h2>Trade Journal</h2>
+
+<input type="date" id="date"><br><br>
+
+<input type="text" id="stock" placeholder="Stock Name"><br><br>
+
+<input type="number" id="entryPrice" placeholder="Entry Price"><br><br>
+
+<input type="number" id="stopLoss" placeholder="Stop Loss"><br><br>
+
+<input type="number" id="target" placeholder="Target"><br><br>
+
+<input type="text" id="emotion" placeholder="Emotion Name"><br><br>
+
+<textarea id="notes" placeholder="Trade Notes"></textarea><br><br>
+
+<button onclick="saveTrade()">Save Trade</button>
+
+<div id="tradeOutput"></div>
+    </body>
+</html>
