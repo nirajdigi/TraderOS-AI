@@ -8,11 +8,54 @@
     </head>
     <script src="script.js"></script>
     <body>
+        <nav>
+            <h2>TraderOS AI</h2>
+            <button>Login</button>
+            <button></button>
+        </nav>
+        <section class="hero">
+            <h1>India's AI Trading Workspace</h1>
+            <p>Risk Calculator ! Trade Journal ! Position Size Calculator</p>
+            <button>Start Free</button>
+        </section>
         <h1>Welcome to TraderOS AI</h1>
         <p>India's AI Platform for Smart Traders</p>
         <button onclick="welcome()">Start Free</button>
-        <h2>Risk Calculator</h2>
+        
 
+        <section class="features">
+            <div class="card">
+                <section id="risk">
+                <h2>Risk Calculator</h2>
+                <p>Calculate your maximum risk before every trade.</p>
+            <a href="#risk">
+                <button>Open Tool</button>
+            </a>
+                </section>
+            </div>
+            
+            <div class="card">
+                <section id="Position">
+                <h2>Position Size</h2>
+                <p>Know the perfect quantity to buy.</p>
+            <a href="#position">
+                 <button>Open Tool</button>
+            </a>
+                 </section>
+            </div>
+
+            <div class="card">
+                <section id="Journal">
+                <h2>Trade Journal</h2>
+                <p>Track every Trade and improve your performance.</p>
+            <a href="#journal">
+                 <button>Open Tool</button>
+            </a>
+                 </section>
+            </div>
+        </section>
+
+<h2>Risk Calculator</h2>
 <input type="number" id="capital" placeholder="Enter Capital">
 
 <input type="number" id="risk" placeholder="Risk %">
