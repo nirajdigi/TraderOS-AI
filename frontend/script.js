@@ -5,7 +5,7 @@ function calculateRisk() {
 
     let capital = Number(document.getElementById("capital").value);
 
-    let risk = Number(document.getElementById("risk").value);
+    let risk = Number(document.getElementById("riskPercent").value);
 
     let riskAmount = capital * risk / 100;
 

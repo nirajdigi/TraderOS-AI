@@ -6,99 +6,78 @@
         <link rel="stylesheet" href="style.css">
         <title>TraderOS AI</title>
     </head>
-    <script src="script.js"></script>
+    
     <body>
         <nav>
             <h2>TraderOS AI</h2>
             <button>Login</button>
-            <button></button>
+            <button>Register</button>
         </nav>
         <section class="hero">
             <h1>India's AI Trading Workspace</h1>
             <p>Risk Calculator ! Trade Journal ! Position Size Calculator</p>
             <button>Start Free</button>
         </section>
-        <h1>Welcome to TraderOS AI</h1>
-        <p>India's AI Platform for Smart Traders</p>
-        <button onclick="welcome()">Start Free</button>
-        
-
+    
         <section class="features">
             <div class="card">
-                <section id="risk">
-                <h2>Risk Calculator</h2>
+                <h2>📊 Risk Calculator</h2>
                 <p>Calculate your maximum risk before every trade.</p>
             <a href="#risk">
                 <button>Open Tool</button>
-            </a>
-                </section>
+            </a>   
             </div>
-            
+
             <div class="card">
-                <section id="Position">
-                <h2>Position Size</h2>
+                <h2>📈 Position Size</h2>
                 <p>Know the perfect quantity to buy.</p>
             <a href="#position">
                  <button>Open Tool</button>
             </a>
-                 </section>
             </div>
 
             <div class="card">
-                <section id="Journal">
-                <h2>Trade Journal</h2>
+                <h2>📒 Trade Journal</h2>
                 <p>Track every Trade and improve your performance.</p>
             <a href="#journal">
                  <button>Open Tool</button>
             </a>
-                 </section>
             </div>
         </section>
 
-<h2>Risk Calculator</h2>
-<input type="number" id="capital" placeholder="Enter Capital">
+        <section id="risk">  
+           <h2>📊 Risk Calculator</h2>
+                <input type="number" id="capital" placeholder="Enter Capital">
+                <input type="number" id="riskPercent" placeholder="Risk %">
+            <br><br>
+                <button onclick="calculateRisk()">Calculate</button>
+                <h3 id="result"></h3>
+        </section>
+        
+        <section id="position">  
+            <h2>📈 Position Size Calculator</h2>
+                <input type="number" id="capital2" placeholder="Capital">
+                <input type="number" id="risk2" placeholder="Risk %">
+                <input type="number" id="entry" placeholder="Entry Price">
+                <input type="number" id="stoploss" placeholder="Stop Loss">
+            <br><br>
+                <button onclick="calculatePosition()">Calculate Position</button>
+                <h3 id="positionResult"></h3>
+        </section>
 
-<input type="number" id="risk" placeholder="Risk %">
-
-<br><br>
-
-<button onclick="calculateRisk()">Calculate</button>
-
-<h3 id="result"></h3>
-<h2>Position Size Calculator</h2>
-
-<input type="number" id="capital2" placeholder="Capital">
-
-<input type="number" id="risk2" placeholder="Risk %">
-
-<input type="number" id="entry" placeholder="Entry Price">
-
-<input type="number" id="stoploss" placeholder="Stop Loss">
-
-<br><br>
-
-<button onclick="calculatePosition()">Calculate Position</button>
-
-<h3 id="positionResult"></h3>
-
-<h2>Trade Journal</h2>
-
-<input type="date" id="date"><br><br>
-
-<input type="text" id="stock" placeholder="Stock Name"><br><br>
-
-<input type="number" id="entryPrice" placeholder="Entry Price"><br><br>
-
-<input type="number" id="stopLoss" placeholder="Stop Loss"><br><br>
-
-<input type="number" id="target" placeholder="Target"><br><br>
-
-<input type="text" id="emotion" placeholder="Emotion Name"><br><br>
-
-<textarea id="notes" placeholder="Trade Notes"></textarea><br><br>
-
-<button onclick="saveTrade()">Save Trade</button>
-
-<div id="tradeOutput"></div>
-    </body>
+        <section id="journal">
+            <h2>📒 Trade Journal</h2>
+                <input type="date" id="date"><br><br>
+                    <input type="text" id="stock" placeholder="Stock Name"><br><br>
+                    <input type="number" id="entryPrice" placeholder="Entry Price"><br><br>
+                    <input type="number" id="stopLoss" placeholder="Stop Loss"><br><br>
+                    <input type="number" id="target" placeholder="Target"><br><br>
+                    <input type="text" id="emotion" placeholder="Emotion Name"><br><br>
+                    <textarea id="notes" placeholder="Trade Notes"></textarea><br><br>
+              <button onclick="saveTrade()">Save Trade</button>
+            <div id="tradeOutput"></div>
+        </section>
+       
+        <script src="script.js"></script>
+    </body>     
 </html>
