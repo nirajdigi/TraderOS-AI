@@ -21,6 +21,22 @@ window.onclick = function(event){
 const saveTradeBtn = document.getElementById("saveTradeBtn");
 
 saveTradeBtn.onclick = function () {
+    const trade = {
+    symbol: document.getElementById("tradeSymbol").value,
+    entry: document.getElementById("entryPrice").value,
+    exit: document.getElementById("exitPrice").value,
+    quantity: document.getElementById("quantity").value,
+    type: document.getElementById("tradeType").value
+};
+
+localStorage.setItem("lastTrade", JSON.stringify(trade));
+
     alert("Trade Saved Successfully!");
     tradeModal.style.display = "none";
+}
+
+const totalTrades = document.getElementById("totalTrades");
+const trade = localStorage.getItem("lastTrade");
+    if (trade) {
+    totalTrades.innerText= "1";
 }
