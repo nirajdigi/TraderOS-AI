@@ -17,3 +17,10 @@ window.onclick = function(event){
         tradeModal.style.display = "none";
     }
 }
+
+const saveTradeBtn = document.getElementById("saveTradeBtn");
+
+saveTradeBtn.onclick = function () {
+    alert("Trade Saved Successfully!");
+    tradeModal.style.display = "none";
+}
