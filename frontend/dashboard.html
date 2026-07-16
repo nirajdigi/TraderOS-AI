@@ -31,6 +31,34 @@
 
 <h2>Dashboard</h2>
 <button id="addTradeBtn">+ Add Trade</button>
+<!-- Add Trade Popup -->
+
+<div id="tradeModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Add New Trade</h2>
+
+        <input type="text" id="tradeSymbol" placeholder="Stock / Symbol">
+
+        <input type="number" id="entryPrice" placeholder="Entry Price">
+
+        <input type="number" id="exitPrice" placeholder="Exit Price">
+
+        <input type="number" id="quantity" placeholder="Quantity">
+
+        <select id="tradeType">
+            <option value="BUY">BUY</option>
+            <option value="SELL">SELL</option>
+        </select>
+
+        <button id="saveTradeBtn">Save Trade</button>
+
+        <button id="closeTradeBtn">Close</button>
+
+    </div>
+
+</div>
 
 <div>
 
