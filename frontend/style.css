@@ -84,3 +84,54 @@ button {
 .card p{
     color: #cbd5e1;
 }
+
+/* Login Modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background: #1e293b;
+    width: 350px;
+    margin: 10% auto;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+}
+
+.modal-content input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: none;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    background: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.close {
+    float: right;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+#registerPopup{
+    display: none;
+}

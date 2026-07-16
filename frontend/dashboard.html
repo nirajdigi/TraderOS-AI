@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TraderOS AI Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>TraderOS AI</h2>
+
+<ul>
+<li>🏠 Dashboard</li>
+<li>📊 Risk Calculator</li>
+<li>📈 Position Size</li>
+<li>📒 Trade Journal</li>
+<li>📉 Analytics</li>
+<li>⚙ Settings</li>
+</ul>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+
+<h2>Dashboard</h2>
+<button id="addTradeBtn">+ Add Trade</button>
+
+<div>
+
+<span id="welcomeUser"></span>
+
+<button onclick="logoutUser()">Logout</button>
+
+</div>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Trades</h3>
+<h1>0</h1>
+</div>
+
+<div class="card">
+<h3>Total Profit</h3>
+<h1>₹0</h1>
+</div>
+
+<div class="card">
+<h3>Win Rate</h3>
+<h1>0%</h1>
+</div>
+
+</div>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>

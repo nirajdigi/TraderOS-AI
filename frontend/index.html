@@ -10,8 +10,10 @@
     <body>
         <nav>
             <h2>TraderOS AI</h2>
-            <button type="button">Login</button>
-            <button type="button">Register</button>
+            <button id="loginBtn" onclick="openLogin()">Login</button>
+            <button id="registerBtn" onclick="openRegister()">Register</button>
+            <span id="welcomeUser" style="display: none;"></span>
+            <button id="logoutBtn" style="display: none;" onclick="logoutUser()">Logout</button>
         </nav>
         <section class="hero">
             <h1>India's AI Trading Workspace</h1>
@@ -79,5 +81,47 @@
         </section>
        
         <script src="script.js"></script>
+
+        <!-- Login Modal -->
+<div id="loginModal" class="modal">
+
+  <div class="modal-content">
+
+    <span class="close" onclick="closeLogin()">&times;</span>
+
+    <h2>Login</h2>
+
+    <input type="email" id="loginEmail" placeholder="Enter Email">
+
+    <input type="password" id="loginPassword" placeholder="Enter Password">
+
+    <button onclick="loginUser()">Login</button>
+
+  </div>
+
+</div>
+
+          <!-- Register Popup -->
+        <div id="registerPopup" class="modal">
+
+           <div class="modal-content">
+
+            <span class="close" onclick="closeRegister()">&times;</span>
+
+            <h2>Register</h2>
+
+            <input type="text" id="registerName" placeholder="Full Name">
+
+            <input type="email" id="registerEmail" placeholder="Enter Email">
+
+            <input type="password" id="registerPassword" placeholder="Enter Password">
+
+            <input type="password" id="confirmPassword" placeholder="Confirm Password">
+
+            <button onclick="registerUser()">Register</button>
+
+            </div>
+        </div>
+
     </body>     
 </html>

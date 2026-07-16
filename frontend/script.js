@@ -56,3 +56,113 @@ function saveTrade() {
         <p><b>Notes:</b> ${notes}</p>
     `;
 }
+
+// Open Login Modal
+function openLogin() {
+    document.getElementById("loginModal").style.display = "block";
+}
+
+// Close Login Modal
+function closeLogin() {
+    document.getElementById("loginModal").style.display = "none";
+}
+
+// Login Button
+function loginUser() {
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    if (email === "" || password === "") {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    alert("Login Successful!");
+
+    closeLogin();
+}
+
+function openRegister(){
+    document.getElementById("registerPopup").
+    style.display="flex";
+}
+
+function closeRegister(){
+
+    document.getElementById("registerPopup").
+    style.display="none";
+}
+
+function registerUser() {
+
+    let name = document.getElementById("registerName").value;
+    let email = document.getElementById("registerEmail").value;
+    let password = document.getElementById("registerPassword").value;
+    let confirmPassword = document.getElementById("confirmPassword").value;
+
+    if(name === "" || email === "" || password === "" || confirmPassword === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    if(password !== confirmPassword){
+        alert("Passwords do not match");
+        return;
+    }
+
+    let user = {
+        name: name,
+        email: email,
+        password: password
+    };
+
+    localStorage.setItem("traderUser", JSON.stringify(user));
+
+    alert("Registration Successful!");
+
+    closeRegister();
+}
+
+function loginUser() {
+
+    let email = document.getElementById("loginEmail").value;
+    let password = document.getElementById("loginPassword").value;
+
+    let user = JSON.parse(localStorage.getItem("traderUser"));
+
+    if (
+        email === user.email &&
+        password === user.password
+    ) {
+
+        alert("Login Successful!");
+           window.location.href="dashboard.html"
+        closeLogin();
+
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("registerBtn").style.display = "none";
+
+        document.getElementById("welcomeUser").style.display = "inline";
+        document.getElementById("logoutBtn").style.display = "inline";
+
+        document.getElementById("welcomeUser").innerHTML =
+        "👋 Welcome " + user.name;
+
+    } else {
+
+        alert("Invalid Email or Password");
+
+    }
+}
+
+function logoutUser() {
+
+    document.getElementById("loginBtn").style.display = "inline-block";
+    document.getElementById("registerBtn").style.display = "inline-block";
+
+    document.getElementById("welcomeUser").style.display = "none";
+    document.getElementById("logoutBtn").style.display = "none";
+
+    alert("Logged Out Successfully");
+}
