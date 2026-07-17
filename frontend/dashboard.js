@@ -182,3 +182,36 @@ function editTrade(index) {
 
     document.getElementById("tradeModal").style.display = "flex";
 }
+
+
+const labels = [];
+const profits = [];
+
+trades.forEach((trade) => {
+
+    let profit = 0;
+
+    if (trade.type === "BUY") {
+        profit = (Number(trade.exit) - Number(trade.entry)) * Number(trade.quantity);
+    } else {
+        profit = (Number(trade.entry) - Number(trade.exit)) * Number(trade.quantity);
+    }
+
+    labels.push(trade.symbol);
+    profits.push(profit);
+
+});
+
+const ctx = document.getElementById("profitChart");
+
+new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Profit",
+            data: profits,
+            tension: 0.3
+        }]
+    }
+});

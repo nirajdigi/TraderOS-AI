@@ -67,22 +67,6 @@ function closeLogin() {
     document.getElementById("loginModal").style.display = "none";
 }
 
-// Login Button
-function loginUser() {
-
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-
-    if (email === "" || password === "") {
-        alert("Please fill all fields.");
-        return;
-    }
-
-    alert("Login Successful!");
-
-    closeLogin();
-}
-
 function openRegister(){
     document.getElementById("registerPopup").
     style.display="flex";
@@ -110,6 +94,12 @@ function registerUser() {
         alert("Passwords do not match");
         return;
     }
+    let existingUser = JSON.parse(localStorage.getItem("traderUser"));
+
+if (existingUser && existingUser.email === email) {
+    alert("Email already registered!");
+    return;
+}
 
     let user = {
         name: name,
@@ -124,20 +114,24 @@ function registerUser() {
     closeRegister();
 }
 
+//login function
 function loginUser() {
 
     let email = document.getElementById("loginEmail").value;
     let password = document.getElementById("loginPassword").value;
 
     let user = JSON.parse(localStorage.getItem("traderUser"));
-
+if (!user) {
+    alert("No account found. Please register first.");
+    return;
+}
     if (
+        user &&
         email === user.email &&
         password === user.password
     ) {
 
-        alert("Login Successful!");
-           window.location.href="dashboard.html"
+
         closeLogin();
 
         document.getElementById("loginBtn").style.display = "none";
@@ -147,7 +141,11 @@ function loginUser() {
         document.getElementById("logoutBtn").style.display = "inline";
 
         document.getElementById("welcomeUser").innerHTML =
-        "👋 Welcome " + user.name;
+            "👋 Welcome " + user.name;
+
+        alert("Login Successful!");
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.href = "dashboard.html";
 
     } else {
 
@@ -155,7 +153,6 @@ function loginUser() {
 
     }
 }
-
 function logoutUser() {
 
     document.getElementById("loginBtn").style.display = "inline-block";

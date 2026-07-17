@@ -200,3 +200,14 @@ h2{
 #tradeTable tr:nth-child(even){
     background:#263457;
 }
+
+
+
+.chart-container{
+    width:100%;
+    max-width:900px;
+    margin-top:20px;
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+}
