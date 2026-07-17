@@ -63,34 +63,52 @@
 
 <div>
 
-<span id="welcomeUser"></span>
+        <span id="welcomeUser"></span>
 
-<button onclick="logoutUser()">Logout</button>
+        <button>Logout</button>
 
-</div>
+    </div>
 
 </div>
 
 <div class="cards">
 
-<div class="card">
-<h3>Total Trades</h3>
-<h1 id="totalTrades">0</h1>
-</div>
+    <div class="card">
+        <h3>Total Trades</h3>
+        <h1 id="totalTrades">0</h1>
+    </div>
 
 <div class="card">
-<h3>Total Profit</h3>
-<h1>₹0</h1>
+    <h3>Total Profit</h3>
+    <h1 id="totalProfit">₹0</h1>
 </div>
 
 <div class="card">
-<h3>Win Rate</h3>
-<h1>0%</h1>
+    <h3>Win Rate</h3>
+    <h1>0%</h1>
+</div>
 </div>
 
-</div>
+<h2>Trade Journal</h2>
 
-</div>
+<table id="tradeTable">
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>Entry</th>
+            <th>Exit</th>
+            <th>Qty</th>
+            <th>Type</th>
+            <th>Profit</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody id="tradeTableBody">
+    </tbody>
+</table>
+</div> <!--main-->
 
 <script src="dashboard.js"></script>
 

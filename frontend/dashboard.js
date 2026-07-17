@@ -36,7 +36,19 @@ localStorage.setItem("lastTrade", JSON.stringify(trade));
 }
 
 const totalTrades = document.getElementById("totalTrades");
-const trade = localStorage.getItem("lastTrade");
-    if (trade) {
-    totalTrades.innerText= "1";
+
+const trade = JSON.parse(localStorage.getItem("lastTrade"));
+
+if (trade) {
+
+    let profit = 0;
+
+    if (trade.type === "BUY") {
+        profit = (Number(trade.exit) - Number(trade.entry)) * Number(trade.quantity);
+    } else {
+        profit = (Number(trade.entry) - Number(trade.exit)) * Number(trade.quantity);
+    }
+
+    document.getElementById("totalTrades").innerText = "1";
+    document.getElementById("totalProfit").innerText = "₹" + profit;
 }
