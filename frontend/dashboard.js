@@ -18,6 +18,7 @@ window.onclick = function(event){
     }
 }
 
+let editIndex= -1;
 const saveTradeBtn = document.getElementById("saveTradeBtn");
 
 saveTradeBtn.onclick = function () {
@@ -33,10 +34,19 @@ localStorage.setItem("lastTrade", JSON.stringify(trade));
 
 let trades = JSON.parse(localStorage.getItem("trades")) || [];
 
-trade.date = new Date().toLocaleDateString();
+if (editIndex === -1){
+    trade.date = new
+    Date().toLocaleString();
+} else{
+trade.date = trades[editIndex].date;
+}
 
+if (editIndex === -1){
 trades.push(trade);
-
+} else{
+    trades[editIndex] = trade;
+    editIndex = -1;
+}
 localStorage.setItem("trades", JSON.stringify(trades));
 
     alert("Trade Saved Successfully!");
@@ -87,7 +97,8 @@ trades.forEach((trade, index) => {
     <td>${trade.type}</td>
     <td>₹${profit}</td>
     <td>${trade.date}</td>
-    <td><button onclick="deleteTrade(${index})">Delete</button></td>
+    <td><button onclick="editTrade(${index})">Edit</button>
+    <button onclick="deleteTrade(${index})">Delete</button></td>
 </tr>
 `;
 
@@ -107,6 +118,24 @@ function deleteTrade(index) {
     }
 }
 
+//iske turant neeche add karo
+
+function editTrade(index) {
+
+    editIndex = index;
+
+    let trades = JSON.parse(localStorage.getItem("trades")) || [];
+
+    let trade = trades[index];
+
+    document.getElementById("tradeSymbol").value = trade.symbol;
+    document.getElementById("entryPrice").value = trade.entry;
+    document.getElementById("exitPrice").value = trade.exit;
+    document.getElementById("quantity").value = trade.quantity;
+    document.getElementById("tradeType").value = trade.type;
+
+    tradeModal.style.display = "flex";
+}
 
 let totalProfit = 0;
 let winTrades = 0;
@@ -136,3 +165,20 @@ const winRate =
         : 0;
 
 document.getElementById("winRate").innerText = winRate + "%";
+
+function editTrade(index) {
+
+    editIndex = index;
+
+    let trades = JSON.parse(localStorage.getItem("trades")) || [];
+
+    let trade = trades[index];
+
+    document.getElementById("tradeSymbol").value = trade.symbol;
+    document.getElementById("entryPrice").value = trade.entry;
+    document.getElementById("exitPrice").value = trade.exit;
+    document.getElementById("quantity").value = trade.quantity;
+    document.getElementById("tradeType").value = trade.type;
+
+    document.getElementById("tradeModal").style.display = "flex";
+}
