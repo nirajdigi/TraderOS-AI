@@ -122,6 +122,7 @@ function deleteTrade(index) {
 
 let totalProfit = 0;
 let winTrades = 0;
+let totalInvestment = 0;
 
 trades.forEach((trade) => {
     let profit = 0;
@@ -133,7 +134,8 @@ trades.forEach((trade) => {
     }
 
     totalProfit += profit;
-
+     totalInvestment +=Number(trade.entry)*
+     Number(trade.quantity);
     if (profit > 0) {
         winTrades++;
     }
@@ -148,6 +150,7 @@ const winRate =
         : 0;
 
 document.getElementById("winRate").innerText = winRate + "%";
+document.getElementById("totalInvestment").innerText = "₹" + totalInvestment;
 
 function editTrade(index) {
 
@@ -245,5 +248,121 @@ function filterTradeByDate() {
         }
 
     });
+
+}
+
+
+const barCtx = document.getElementById("barChart");
+
+new Chart(barCtx,{
+    type:"bar",
+    data:{
+        labels:labels,
+        datasets:[{
+            label:"Profit",
+            data:profits
+        }]
+    }
+});
+
+let wins = 0;
+let losses = 0;
+
+profits.forEach((profit)=>{
+
+    if(profit>=0){
+        wins++;
+    }else{
+        losses++;
+    }
+
+});
+
+const pieCtx = document.getElementById("pieChart");
+
+new Chart(pieCtx,{
+    type:"pie",
+    data:{
+        labels:["Win","Loss"],
+        datasets:[{
+            data:[wins,losses]
+        }]
+    }
+});
+
+let best = Math.max(...profits);
+let worst = Math.min(...profits);
+
+let avg = 0;
+
+if(profits.length>0){
+    avg = profits.reduce((a,b)=>a+b,0)/profits.length;
+}
+
+document.getElementById("avgProfit").innerText="₹"+avg.toFixed(2);
+
+document.getElementById("bestTrade").innerText="₹"+best;
+
+document.getElementById("worstTrade").innerText="₹"+worst;
+
+
+
+function filterTradeType(){
+
+    let type = document.getElementById("tradeTypeFilter").value;
+
+    let rows = document.querySelectorAll("#tradeTable tbody tr");
+
+    rows.forEach(function(row){
+
+        let rowType = row.cells[4].innerText;
+
+        if(type==="" || rowType===type){
+
+            row.style.display="";
+
+        }else{
+
+            row.style.display="none";
+
+        }
+
+    });
+
+}
+
+function exportCSV(){
+
+    let trades = JSON.parse(localStorage.getItem("trades")) || [];
+
+    let csv = "Symbol,Entry,Exit,Quantity,Type,Profit,Date\n";
+
+    trades.forEach(function(trade){
+
+        let profit = 0;
+
+        if(trade.type==="BUY"){
+
+            profit=(trade.exit-trade.entry)*trade.quantity;
+
+        }else{
+
+            profit=(trade.entry-trade.exit)*trade.quantity;
+
+        }
+
+        csv += `${trade.symbol},${trade.entry},${trade.exit},${trade.quantity},${trade.type},${profit},${trade.date}\n`;
+
+    });
+
+    let blob = new Blob([csv],{type:"text/csv"});
+
+    let link=document.createElement("a");
+
+    link.href=URL.createObjectURL(blob);
+
+    link.download="TraderOS_Trades.csv";
+
+    link.click();
 
 }

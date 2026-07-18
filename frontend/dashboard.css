@@ -244,3 +244,42 @@ h2{
     background:#1d2746;
     color:white;
 }
+
+.analytics-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.chart-card{
+    background:#2563eb;
+    padding:25px;
+    border-radius:12px;
+    height: 300px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,.3);
+}
+
+.toolbar{
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+margin:20px 0;
+
+}
+
+.toolbar input,
+.toolbar select,
+.toolbar button{
+
+padding:10px;
+
+border-radius:8px;
+
+border:none;
+
+}

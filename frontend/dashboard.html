@@ -87,6 +87,12 @@
     <h3>Win Rate</h3>
     <h1 id="winRate">0%</h1>
 </div>
+
+<div class="card">
+    <h3>Total Investment</h3>
+    <h2 id="totalInvestment">0%</h2>
+</div>
+
 </div>
 
 <h2>Trade Journal</h2>
@@ -106,10 +112,62 @@
         onchange="filterTradeByDate()">
 </div>
 
+<div class="toolbar">
+
+    <input
+        type="text"
+        id="searchTrade"
+        placeholder="Search Symbol"
+        onkeyup="searchTrade()">
+
+    <input
+        type="date"
+        id="filterDate"
+        onchange="filterTradeByDate()">
+
+    <select id="tradeTypeFilter" onchange="filterTradeType()">
+        <option value="">All</option>
+        <option value="BUY">BUY</option>
+        <option value="SELL">SELL</option>
+    </select>
+
+    <button onclick="exportCSV()">Export CSV</button>
+
+</div>
+
 <h2>Analytics</h2>
 
 <div class="chart-container">
     <canvas id="profitChart"></canvas>
+</div>
+
+<div class="analytics-grid">
+
+    <div class="chart-card">
+        <h3>Profit by Symbol</h3>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Win vs Loss</h3>
+        <canvas id="pieChart"></canvas>
+    </div>
+
+</div>
+
+<div class="card">
+    <h3>Average Profit</h3>
+    <h2 id="avgProfit">₹0</h2>
+</div>
+
+<div class="card">
+    <h3>Best Trade</h3>
+    <h2 id="bestTrade">₹0</h2>
+</div>
+
+<div class="card">
+    <h3>Worst Trade</h3>
+    <h2 id="worstTrade">₹0</h2>
 </div>
 <table id="tradeTable">
     <thead>
@@ -127,6 +185,9 @@
 
     <tbody id="tradeTableBody"></tbody>
 </table>
+
+
+
 </div> <!--main-->
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
