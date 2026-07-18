@@ -51,6 +51,7 @@ localStorage.setItem("trades", JSON.stringify(trades));
 
     alert("Trade Saved Successfully!");
     tradeModal.style.display = "none";
+    location.reload();
 }
 
 const totalTrades = document.getElementById("totalTrades");
@@ -118,24 +119,6 @@ function deleteTrade(index) {
     }
 }
 
-//iske turant neeche add karo
-
-function editTrade(index) {
-
-    editIndex = index;
-
-    let trades = JSON.parse(localStorage.getItem("trades")) || [];
-
-    let trade = trades[index];
-
-    document.getElementById("tradeSymbol").value = trade.symbol;
-    document.getElementById("entryPrice").value = trade.entry;
-    document.getElementById("exitPrice").value = trade.exit;
-    document.getElementById("quantity").value = trade.quantity;
-    document.getElementById("tradeType").value = trade.type;
-
-    tradeModal.style.display = "flex";
-}
 
 let totalProfit = 0;
 let winTrades = 0;
@@ -215,3 +198,52 @@ new Chart(ctx, {
         }]
     }
 });
+
+//search box area
+
+function searchTrade() {
+
+    let input = document.getElementById("searchTrade").value.toLowerCase();
+
+    let rows = document.querySelectorAll("#tradeTable tbody tr");
+
+    rows.forEach(function(row){
+
+        let symbol = row.cells[0].innerText.toLowerCase();
+
+        if(symbol.includes(input)){
+            row.style.display = "";
+        }else{
+            row.style.display = "none";
+        }
+
+    });
+
+}
+
+function filterTradeByDate() {
+
+    let selectedDate = document.getElementById("filterDate").value;
+
+    let rows = document.querySelectorAll("#tradeTable tbody tr");
+
+    rows.forEach(function(row){
+
+        let rowDate = row.cells[6].innerText.split(",")[0];
+
+        let tradeDate = new Date(rowDate);
+
+        let formattedDate =
+            tradeDate.getFullYear() + "-" +
+            String(tradeDate.getMonth()+1).padStart(2,"0") + "-" +
+            String(tradeDate.getDate()).padStart(2,"0");
+
+        if(selectedDate==="" || formattedDate===selectedDate){
+            row.style.display="";
+        }else{
+            row.style.display="none";
+        }
+
+    });
+
+}
