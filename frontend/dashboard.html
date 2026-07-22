@@ -40,13 +40,13 @@
 
         <h2>Add New Trade</h2>
 
-        <input type="text" id="tradeSymbol" placeholder="Stock / Symbol">
+        <input type="text" id="tradeSymbol" placeholder="Stock / Symbol" maxlength="20" required>
 
-        <input type="number" id="entryPrice" placeholder="Entry Price">
+        <input type="number" id="entryPrice" placeholder="Entry Price" min="0.01" step="0.01" required>
 
-        <input type="number" id="exitPrice" placeholder="Exit Price">
+        <input type="number" id="exitPrice" placeholder="Exit Price" min="0.01" step="0.01" required>
 
-        <input type="number" id="quantity" placeholder="Quantity">
+        <input type="number" id="quantity" placeholder="Quantity" min="1" step="1" required>
 
         <select id="tradeType">
             <option value="BUY">BUY</option>
@@ -54,88 +54,89 @@
         </select>
 
         <button id="saveTradeBtn">Save Trade</button>
-
         <button id="closeTradeBtn">Close</button>
-
     </div>
-
 </div>
 
-<div>
-
+    <div>
         <span id="welcomeUser"></span>
-
-        <button>Logout</button>
-
+        <button id="logoutBtn" type="button">Logout</button>
     </div>
-
 </div>
 
-<div class="cards">
-
+<div class="dashboard-cards">
     <div class="card">
         <h3>Total Trades</h3>
-        <h1 id="totalTrades">0</h1>
+        <h2 id="totalTrades">0</h2>
     </div>
 
-<div class="card">
-    <h3>Total Profit</h3>
-    <h1 id="totalProfit">₹0</h1>
+    <div class="card">
+        <h3>Total Profit</h3>
+        <h2 id="totalProfit">₹0</h2>
+     </div>
+
+    <div class="card">
+        <h3>Win Rate</h3>
+        <h2 id="winRate">0%</h2>
+    </div>
+
+    <div class="card">
+        <h3>Total Investment</h3>
+        <h2 id="totalInvestment">₹0</h2>
+    </div>
+
 </div>
 
-<div class="card">
-    <h3>Win Rate</h3>
-    <h1 id="winRate">0%</h1>
-</div>
-
-<div class="card">
-    <h3>Total Investment</h3>
-    <h2 id="totalInvestment">0%</h2>
-</div>
-
-</div>
 
 <h2>Trade Journal</h2>
-
-<div class="search-box">
-    <input
-        type="text"
-        id="searchTrade"
-        placeholder="Search Symbol..."
-        onkeyup="searchTrade()">
-</div>
-
-<div class="filter-box">
-    <input
-        type="date"
-        id="filterDate"
-        onchange="filterTradeByDate()">
-</div>
-
 <div class="toolbar">
 
-    <input
-        type="text"
-        id="searchTrade"
-        placeholder="Search Symbol"
-        onkeyup="searchTrade()">
+    <div class="toolbar-group">
+        <input
+            type="text"
+            id="searchTrade"
+            placeholder="🔍 Search Symbol"
+            onkeyup="searchTrade()">
+    </div>
 
-    <input
-        type="date"
-        id="filterDate"
-        onchange="filterTradeByDate()">
+    <div class="toolbar-group">
+        <input
+            type="date"
+            id="filterDate"
+            onchange="filterTradeByDate()">
+    </div>
 
-    <select id="tradeTypeFilter" onchange="filterTradeType()">
-        <option value="">All</option>
-        <option value="BUY">BUY</option>
-        <option value="SELL">SELL</option>
-    </select>
+    <div class="toolbar-group">
+        <select
+            id="tradeTypeFilter"
+            onchange="filterTradeType()">
 
-    <button onclick="exportCSV()">Export CSV</button>
+            <option value="">All Trades</option>
+            <option value="BUY">BUY</option>
+            <option value="SELL">SELL</option>
+
+        </select>
+    </div>
+
+    <div class="toolbar-group">
+        <button onclick="exportCSV()">
+            📥 Export CSV
+        </button>
+    </div>
+
+    <div class="toolbar-group">
+        <button id="exportPDFBtn" onclick="exportPDF()">
+            📄 Export PDF
+        </button>
+    </div>
 
 </div>
 
+
 <h2>Analytics</h2>
+<p class="section-subtitle">
+    Track your trading performance
+</p>
 
 <div class="chart-container">
     <canvas id="profitChart"></canvas>
@@ -169,6 +170,7 @@
     <h3>Worst Trade</h3>
     <h2 id="worstTrade">₹0</h2>
 </div>
+<div class="table-wrapper">
 <table id="tradeTable">
     <thead>
         <tr>
@@ -185,6 +187,7 @@
 
     <tbody id="tradeTableBody"></tbody>
 </table>
+</div>
 
 
 
@@ -192,7 +195,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
 <script src="dashboard.js"></script>
+
 
 </body>
 </html>

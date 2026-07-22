@@ -17,8 +17,8 @@
         </nav>
         <section class="hero">
             <h1>India's AI Trading Workspace</h1>
-            <p>Risk Calculator ! Trade Journal ! Position Size Calculator</p>
-            <button>Start Free</button>
+            <p>Risk Calculator · Trade Journal · Position Size Calculator</p>
+            <button type="button" onclick="openRegister()">Start Free</button>
         </section>
     
         <section class="features">
@@ -49,8 +49,8 @@
 
         <section id="risk">  
            <h2>📊 Risk Calculator</h2>
-                <input type="number" id="capital" placeholder="Enter Capital">
-                <input type="number" id="riskPercent" placeholder="Risk %">
+                <input type="number" id="capital" placeholder="Enter Capital" min="0.01" step="0.01" required>
+                <input type="number" id="riskPercent" placeholder="Risk %" min="0.01" max="100" step="0.01" required>
             <br><br>
                 <button onclick="calculateRisk()">Calculate</button>
                 <h3 id="result"></h3>
@@ -58,10 +58,10 @@
         
         <section id="position">  
             <h2>📈 Position Size Calculator</h2>
-                <input type="number" id="capital2" placeholder="Capital">
-                <input type="number" id="risk2" placeholder="Risk %">
-                <input type="number" id="entry" placeholder="Entry Price">
-                <input type="number" id="stoploss" placeholder="Stop Loss">
+                <input type="number" id="capital2" placeholder="Capital" min="0.01" step="0.01" required>
+                <input type="number" id="risk2" placeholder="Risk %" min="0.01" max="100" step="0.01" required>
+                <input type="number" id="entry" placeholder="Entry Price" min="0.01" step="0.01" required>
+                <input type="number" id="stoploss" placeholder="Stop Loss" min="0" step="0.01" required>
             <br><br>
                 <button onclick="calculatePosition()">Calculate Position</button>
                 <h3 id="positionResult"></h3>
@@ -69,14 +69,20 @@
 
         <section id="journal">
             <h2>📒 Trade Journal</h2>
-                <input type="date" id="date"><br><br>
-                    <input type="text" id="stock" placeholder="Stock Name"><br><br>
-                    <input type="number" id="entryPrice" placeholder="Entry Price"><br><br>
-                    <input type="number" id="stopLoss" placeholder="Stop Loss"><br><br>
-                    <input type="number" id="target" placeholder="Target"><br><br>
-                    <input type="text" id="emotion" placeholder="Emotion Name"><br><br>
-                    <textarea id="notes" placeholder="Trade Notes"></textarea><br><br>
-              <button onclick="saveTrade()">Save Trade</button>
+                <input type="date" id="date" required><br><br>
+                    <input type="text" id="stock" placeholder="Stock Name" maxlength="20" required><br><br>
+                    <input type="number" id="entryPrice" placeholder="Entry Price" min="0" step="0.01" required><br><br>
+                    <input type="number" id="exitPrice" placeholder="Exit Price" min="0" step="0.01" required><br><br>
+                    <input type="number" id="quantity" placeholder="Quantity" min="1" step="1" required><br><br>
+                    <select id="tradeType">
+                        <option value="BUY">BUY</option>
+                        <option value="SELL">SELL</option>
+                    </select><br><br>
+                    <input type="number" id="stopLoss" placeholder="Stop Loss" min="0" step="0.01"><br><br>
+                    <input type="number" id="target" placeholder="Target" min="0" step="0.01"><br><br>
+                    <input type="text" id="emotion" placeholder="Emotion Name" maxlength="50"><br><br>
+                    <textarea id="notes" placeholder="Trade Notes" maxlength="1000"></textarea><br><br>
+              <button id="saveJournalTradeBtn" type="button" onclick="saveTrade()">Save Trade</button>
             <div id="tradeOutput"></div>
         </section>
        
