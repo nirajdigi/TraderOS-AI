@@ -43,6 +43,7 @@ function openTradeModal() {
 }
 
 function closeTradeModal() {
+    
     tradeModal.style.display = "none";
     editIndex = -1;
     clearTradeForm();
@@ -66,26 +67,53 @@ saveTradeBtn.addEventListener("click", async () => {
     const type = document.getElementById("tradeType").value;
 
     if (!symbol || !Number.isFinite(entry) || !Number.isFinite(exit) || !Number.isFinite(quantity) || entry <= 0 || exit <= 0 || quantity <= 0 || !Number.isInteger(quantity)) {
-        alert("Enter a symbol, positive prices, and a whole quantity greater than zero.");
+        showToast("Please fill all trade details correctly.", "error");
         return;
     }
 
     try {
         const existingTrade = editIndex >= 0 ? trades[editIndex] : {};
-        const trade = { ...existingTrade, symbol, entry, exit, quantity, type, date: existingTrade.date || new Date().toISOString() };
-        const result = await apiRequest(editIndex >= 0 ? `/api/trades/${existingTrade.id}` : "/api/trades", {
-            method: editIndex >= 0 ? "PUT" : "POST",
-            body: JSON.stringify(trade)
-        });
-        if (editIndex >= 0) trades[editIndex] = result.trade;
-        else trades.push(result.trade);
+        const trade = {
+            ...existingTrade,
+            symbol,
+            entry,
+            exit,
+            quantity,
+            type,
+            date: existingTrade.date || new Date().toISOString()
+        };
+
+        const result = await apiRequest(
+            editIndex >= 0 ? `/api/trades/${existingTrade.id}` : "/api/trades",
+            {
+                method: editIndex >= 0 ? "PUT" : "POST",
+                body: JSON.stringify(trade)
+            }
+        );
+
+        const isEdit = editIndex >= 0;
+
+        if (isEdit) {
+            trades[editIndex] = result.trade;
+        } else {
+            trades.push(result.trade);
+        }
+
+        closeTradeModal();
+        render();
+
+        showToast(
+            isEdit
+                ? "✏ Trade Updated Successfully"
+                : "✅ Trade Added Successfully",
+            isEdit ? "info" : "success"
+        );
+
     } catch (error) {
-        alert(error.message);
-        return;
+        showToast(error.message, "error");
     }
-    closeTradeModal();
-    render();
 });
+
 
 function editTrade(index) {
     editIndex = index;
@@ -118,15 +146,58 @@ function render() {
     const totalProfit = profits.reduce((sum, profit) => sum + profit, 0);
     const totalInvestment = trades.reduce((sum, trade) => sum + Number(trade.entry) * Number(trade.quantity), 0);
     const wins = profits.filter((profit) => profit > 0).length;
+    const losses = profits.filter((profit) => profit <= 0).length;
 
     document.getElementById("totalTrades").textContent = trades.length;
     document.getElementById("totalProfit").textContent = currency.format(totalProfit);
+    const totalProfitElement = document.getElementById("totalProfit");
+
+if (totalProfit >= 0) {
+    totalProfitElement.style.color = "#22c55e";   // Green
+} else {
+    totalProfitElement.style.color = "#ef4444";   // Red
+}
     document.getElementById("totalInvestment").textContent = currency.format(totalInvestment);
     document.getElementById("winRate").textContent = `${trades.length ? Math.round((wins / trades.length) * 100) : 0}%`;
+    const winRate = trades.length
+    ? Math.round((wins / trades.length) * 100)
+    : 0;
+
+const winRateElement = document.getElementById("winRate");
+
+winRateElement.textContent = `${winRate}%`;
+
+if (winRate >= 70) {
+    winRateElement.style.color = "#22c55e";   // Green
+} else if (winRate >= 40) {
+    winRateElement.style.color = "#f59e0b";   // Orange
+} else {
+    winRateElement.style.color = "#ef4444";   // Red
+}
+    document.getElementById("winStats").innerHTML =
+    `🟢 ${wins} Wins • 🔴 ${losses} Loss`;
     document.getElementById("avgProfit").textContent = currency.format(trades.length ? totalProfit / trades.length : 0);
+    
+    const avgProfit = trades.length ? totalProfit / trades.length : 0;
+
+const avgProfitElement = document.getElementById("avgProfit");
+
+if (avgProfit >= 0) {
+    avgProfitElement.style.color = "#22c55e";
+} else {
+    avgProfitElement.style.color = "#ef4444";
+}
     document.getElementById("bestTrade").textContent = currency.format(profits.length ? Math.max(...profits) : 0);
     document.getElementById("worstTrade").textContent = currency.format(profits.length ? Math.min(...profits) : 0);
+const worstTradeValue = profits.length ? Math.min(...profits) : 0;
 
+const worstTradeElement = document.getElementById("worstTrade");
+
+if (worstTradeValue < 0) {
+    worstTradeElement.style.color = "#ef4444";
+} else {
+    worstTradeElement.style.color = "#22c55e";
+}
     tradeTableBody.innerHTML = trades.map((trade, index) => `
         <tr>
             <td>${escapeHtml(String(trade.symbol || ""))}</td>

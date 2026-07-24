@@ -514,3 +514,10 @@ tbody tr:hover{
 #toast.info{
     border-left:5px solid #3b82f6;
 }
+
+.win-stats{
+    margin-top:8px;
+    font-size:14px;
+    font-weight:600;
+    color:#cbd5e1;
+}
