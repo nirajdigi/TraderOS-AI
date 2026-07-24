@@ -262,3 +262,20 @@ async function initialiseDashboard() {
 }
 
 initialiseDashboard();
+
+function showToast(message, type = "success") {
+
+    const toast = document.getElementById("toast");
+
+    toast.className = "";
+
+    toast.classList.add(type);
+
+    toast.classList.add("show");
+
+    toast.textContent = message;
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}

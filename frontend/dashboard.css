@@ -478,3 +478,39 @@ tbody tr{
 tbody tr:hover{
     background: #243b5a;
 }
+
+/* ===== Toast ===== */
+
+#toast{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#1f2937;
+    color:#fff;
+    padding:14px 22px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    box-shadow:0 8px 20px rgba(0,0,0,.3);
+    opacity:0;
+    transform:translateY(-20px);
+    transition:.35s;
+    z-index:9999;
+}
+
+#toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+#toast.success{
+    border-left:5px solid #22c55e;
+}
+
+#toast.error{
+    border-left:5px solid #ef4444;
+}
+
+#toast.info{
+    border-left:5px solid #3b82f6;
+}
