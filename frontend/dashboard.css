@@ -521,3 +521,174 @@ tbody tr:hover{
     font-weight:600;
     color:#cbd5e1;
 }
+
+/* ===== Tablat 1024px ===== */
+@media (max-width:1024px){
+
+.dashboard-cards{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.analytics-grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+/* ===== Mobile 768px ===== */
+
+@media (max-width:768px){
+
+    body{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+    }
+
+    .main{
+        margin-left:0;
+        padding:15px;
+    }
+
+    .topbar{
+        display:flex;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .dashboard-cards{
+        grid-template-columns:1fr;
+    }
+
+    .toolbar{
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .toolbar-group{
+        width:100%;
+    }
+
+    .toolbar-group input,
+    .toolbar-group select,
+    .toolbar-group button{
+        width:100%;
+    }
+
+    .chart-container,
+    .chart-card{
+        height:300px;
+        min-height: 280px;
+        max-height: 320px;
+    }
+
+    .chart-container canvas,
+    .chart-card canvas{
+        width:100% !important;
+        height:100% !important;
+    }
+
+    .chart-card{
+        width:100%;
+        min-height: 280px;
+        max-height: 320px;
+    }
+
+    .table-wrapper{
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    table{
+        min-width:800px;
+    }
+}
+
+/* ===== Small 480px ===== */
+@media (max-width:480px){
+
+.card h2{
+    font-size:24px;
+}
+
+.topbar h2{
+    font-size:22px;
+}
+
+button{
+    width:100%;
+}
+
+}
+
+/* ===== Menu Buttom===== */
+.menu-btn{
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    
+    width: 45px;
+    height: 45px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #1abc9c;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    text-align:center;
+   
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+
+    display:none;
+    z-index:998;
+}
+
+.overlay.show{
+    display:block;
+}
+
+@media(max-width:768px){
+
+.menu-btn{
+    display:block;
+}
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:-270px;
+
+    width:250px;
+    height:100vh;
+
+    z-index:999;
+
+    transition:left .3s ease;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.main{
+    margin-left:0;
+    padding-top:70px;
+}
+
+}
