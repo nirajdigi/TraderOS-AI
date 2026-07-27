@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
@@ -8,83 +13,121 @@
     </head>
     
     <body>
-        <nav>
-            <h2>TraderOS AI</h2>
-            <button id="loginBtn" onclick="openLogin()">Login</button>
-            <button id="registerBtn" onclick="openRegister()">Register</button>
-            <span id="welcomeUser" style="display: none;"></span>
-            <button id="logoutBtn" style="display: none;" onclick="logoutUser()">Logout</button>
-        </nav>
+        <nav class="navbar">
+
+    <div class="logo">
+        <h2>TraderOS AI</h2>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#dashboard-preview">Dashboard</a></li>
+        <li><a href="#faq">FAQ</a></li>
+    </ul>
+
+    <div class="nav-buttons">
+
+        <button id="loginBtn" onclick="openLogin()">
+            Login
+        </button>
+
+        <button class="primary-btn" id="registerBtn" onclick="openRegister()">
+            Start Free
+        </button>
+
+        <span id="welcomeUser" style="display:none;"></span>
+
+        <button id="logoutBtn" style="display:none;" onclick="logoutUser()">
+            Logout
+        </button>
+
+    </div>
+
+</nav>
         <section class="hero">
-            <h1>India's AI Trading Workspace</h1>
-            <p>Risk Calculator · Trade Journal · Position Size Calculator</p>
-            <button type="button" onclick="openRegister()">Start Free</button>
-        </section>
-    
-        <section class="features">
-            <div class="card">
-                <h2>📊 Risk Calculator</h2>
-                <p>Calculate your maximum risk before every trade.</p>
-            <a href="#risk">
-                <button>Open Tool</button>
-            </a>   
-            </div>
 
-            <div class="card">
-                <h2>📈 Position Size</h2>
-                <p>Know the perfect quantity to buy.</p>
-            <a href="#position">
-                 <button>Open Tool</button>
+    <div class="hero-left">
+
+        <span class="hero-badge">🚀 AI Powered Trading Platform</span>
+
+        <h1>India's AI Trading Workspace</h1>
+
+        <p>
+            Trade smarter with intelligent risk management,
+            trade journaling and performance analytics —
+            all in one place.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button class="primary-btn" onclick="openRegister()">
+                Start Free
+            </button>
+
+            <a href="dashboard.html">
+                <button class="secondary-btn">
+                    Live Demo
+                </button>
             </a>
-            </div>
 
-            <div class="card">
-                <h2>📒 Trade Journal</h2>
-                <p>Track every Trade and improve your performance.</p>
-            <a href="#journal">
-                 <button>Open Tool</button>
-            </a>
-            </div>
-        </section>
+        </div>
 
-        <section id="risk">  
-           <h2>📊 Risk Calculator</h2>
-                <input type="number" id="capital" placeholder="Enter Capital" min="0.01" step="0.01" required>
-                <input type="number" id="riskPercent" placeholder="Risk %" min="0.01" max="100" step="0.01" required>
-            <br><br>
-                <button onclick="calculateRisk()">Calculate</button>
-                <h3 id="result"></h3>
-        </section>
-        
-        <section id="position">  
-            <h2>📈 Position Size Calculator</h2>
-                <input type="number" id="capital2" placeholder="Capital" min="0.01" step="0.01" required>
-                <input type="number" id="risk2" placeholder="Risk %" min="0.01" max="100" step="0.01" required>
-                <input type="number" id="entry" placeholder="Entry Price" min="0.01" step="0.01" required>
-                <input type="number" id="stoploss" placeholder="Stop Loss" min="0" step="0.01" required>
-            <br><br>
-                <button onclick="calculatePosition()">Calculate Position</button>
-                <h3 id="positionResult"></h3>
-        </section>
+    </div>
 
-        <section id="journal">
-            <h2>📒 Trade Journal</h2>
-                <input type="date" id="date" required><br><br>
-                    <input type="text" id="stock" placeholder="Stock Name" maxlength="20" required><br><br>
-                    <input type="number" id="entryPrice" placeholder="Entry Price" min="0" step="0.01" required><br><br>
-                    <input type="number" id="exitPrice" placeholder="Exit Price" min="0" step="0.01" required><br><br>
-                    <input type="number" id="quantity" placeholder="Quantity" min="1" step="1" required><br><br>
-                    <select id="tradeType">
-                        <option value="BUY">BUY</option>
-                        <option value="SELL">SELL</option>
-                    </select><br><br>
-                    <input type="number" id="stopLoss" placeholder="Stop Loss" min="0" step="0.01"><br><br>
-                    <input type="number" id="target" placeholder="Target" min="0" step="0.01"><br><br>
-                    <input type="text" id="emotion" placeholder="Emotion Name" maxlength="50"><br><br>
-                    <textarea id="notes" placeholder="Trade Notes" maxlength="1000"></textarea><br><br>
-              <button id="saveJournalTradeBtn" type="button" onclick="saveTrade()">Save Trade</button>
-            <div id="tradeOutput"></div>
-        </section>
+    <div class="hero-right">
+
+        <div class="dashboard-preview">
+
+            <h3>Dashboard Preview</h3>
+            <div class="preview-header">
+    <span class="live-dot"></span>
+    <span>Live Dashboard</span>
+</div>
+
+<div class="preview-card">
+    <p>Total Profit</p>
+    <h2>₹18,540</h2>
+</div>
+
+<div class="preview-card">
+    <p>Win Rate</p>
+    <h2>78%</h2>
+</div>
+
+<div class="preview-card">
+    <p>Total Trades</p>
+    <h2>124</h2>
+</div>
+
+  </div>
+
+    </div>
+
+</section>
+
+<section class="stats">
+
+    <div class="stat">
+        <h2>10K+</h2>
+        <p>Trades Logged</p>
+    </div>
+
+    <div class="stat">
+        <h2>75%</h2>
+        <p>Average Win Rate</p>
+    </div>
+
+    <div class="stat">
+        <h2>24/7</h2>
+        <p>Available</p>
+    </div>
+
+    <div class="stat">
+        <h2>99.9%</h2>
+        <p>Reliable</p>
+    </div>
+
+</section>
        
         <script src="script.js"></script>
 
