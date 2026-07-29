@@ -1,0 +1,34 @@
+{
+  "name": "traderos-ai",
+  "version": "1.0.0",
+  "description": "1. Install a current version of Node.js. 2. In this folder, run `node server.js`. 3. Open `http://localhost:3000` in your browser.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nirajdigi/TraderOS-AI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nirajdigi/TraderOS-AI/issues"
+  },
+  "homepage": "https://github.com/nirajdigi/TraderOS-AI#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mongoose": "^9.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

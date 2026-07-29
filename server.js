@@ -5,7 +5,7 @@ const path = require("node:path");
 const { promisify } = require("node:util");
 
 const PORT = Number(process.env.PORT) || 3000;
-const frontendDir = path.join(__dirname, "frontend");
+const frontendDir = path.join(__dirname, "public");
 const dataDir = path.join(__dirname, "data");
 const usersFile = path.join(dataDir, "users.json");
 const tradesFile = path.join(dataDir, "trades.json");
