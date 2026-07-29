@@ -1,3 +1,14 @@
+const $ = (id) => document.getElementById(id);
+
+const API = {
+    LOGIN: "/api/login",
+    LOGOUT: "/api/logout",
+    REGISTER: "/api/register",
+    SESSION: "/api/session",
+    TRADES: "/api/trades"
+};
+ 
+
 async function apiRequest(path, options = {}) {
     const response = await fetch(path, {
         ...options,
@@ -10,9 +21,9 @@ async function apiRequest(path, options = {}) {
 }
 
 function calculateRisk() {
-    const capital = Number(document.getElementById("capital").value);
-    const risk = Number(document.getElementById("riskPercent").value);
-    const result = document.getElementById("result");
+    const capital = Number($("capital").value);
+    const risk = Number($("riskPercent").value);
+    const result = $("result");
 
     if (!Number.isFinite(capital) || capital <= 0) {
         result.textContent = "Capital must be greater than ₹0.";
@@ -26,11 +37,11 @@ function calculateRisk() {
 }
 
 function calculatePosition() {
-    const capital = Number(document.getElementById("capital2").value);
-    const risk = Number(document.getElementById("risk2").value);
-    const entry = Number(document.getElementById("entry").value);
-    const stoploss = Number(document.getElementById("stoploss").value);
-    const result = document.getElementById("positionResult");
+    const capital = Number($("capital2").value);
+const risk = Number($("risk2").value);
+const entry = Number($("entry").value);
+const stoploss = Number($("stoploss").value);
+const result = $("positionResult");
 
     if (!Number.isFinite(capital) || capital <= 0 || !Number.isFinite(entry) || entry <= 0 || !Number.isFinite(stoploss) || stoploss < 0) {
         result.textContent = "Capital and entry must be greater than ₹0; stop loss cannot be negative.";
@@ -56,18 +67,18 @@ function calculatePosition() {
 }
 
 async function saveTrade() {
-    const saveButton = document.getElementById("saveJournalTradeBtn");
-    const date = document.getElementById("date").value;
-    const symbol = document.getElementById("stock").value.trim().toUpperCase();
-    const entry = Number(document.getElementById("entryPrice").value);
-    const exit = Number(document.getElementById("exitPrice").value);
-    const quantity = Number(document.getElementById("quantity").value);
-    const type = document.getElementById("tradeType").value;
-    const stopLoss = document.getElementById("stopLoss").value;
-    const target = document.getElementById("target").value;
-    const emotion = document.getElementById("emotion").value.trim();
-    const notes = document.getElementById("notes").value.trim();
-    const output = document.getElementById("tradeOutput");
+    const date = $("date").value;
+const symbol = $("stock").value.trim().toUpperCase();
+   const saveButton = $("saveJournalTradeBtn");
+   const entry = Number($("entryPrice").value);
+   const exit = Number($("exitPrice").value);
+   const quantity = Number($("quantity").value);
+   const type = $("tradeType").value;
+   const stopLoss = $("stopLoss").value;
+   const target = $("target").value;
+   const emotion = $("emotion").value.trim();
+   const notes = $("notes").value.trim();
+   const output = $("tradeOutput");
 
     if (!date || !symbol || !Number.isFinite(entry) || !Number.isFinite(exit) || !Number.isFinite(quantity) || entry <= 0 || exit <= 0 || quantity <= 0 || !Number.isInteger(quantity)) {
         output.textContent = "Enter a date, symbol, valid prices, and a quantity greater than zero.";
@@ -87,7 +98,7 @@ async function saveTrade() {
         notes
     };
     try {
-        await apiRequest("/api/trades", { method: "POST", body: JSON.stringify(trade) });
+        await apiRequest(API.TRADES, { method: "POST", body: JSON.stringify(trade) });
     } catch (error) {
         output.textContent = error.message;
         return;
@@ -104,39 +115,36 @@ async function saveTrade() {
     dashboardLink.textContent = "Open Dashboard";
     output.append(heading, summary, dashboardLink);
 
-    document.getElementById("stock").value = "";
-    document.getElementById("entryPrice").value = "";
-    document.getElementById("exitPrice").value = "";
-    document.getElementById("quantity").value = "";
-    document.getElementById("stopLoss").value = "";
-    document.getElementById("target").value = "";
-    document.getElementById("emotion").value = "";
-    document.getElementById("notes").value = "";
+    $("stock").value = "";
+    $("entryPrice").value = "";
+    $("exitPrice").value = "";
+    $("quantity").value = "";
+    $("stopLoss").value = "";
+    $("target").value = "";
+    $("emotion").value = "";
+    $("notes").value = "";
     saveButton.disabled = true;
     window.setTimeout(() => { saveButton.disabled = false; }, 500);
 }
 
 function openLogin() {
-    document.getElementById("loginModal").style.display = "block";
+    $("loginModal").style.display = "block";
 }
-
 function closeLogin() {
-    document.getElementById("loginModal").style.display = "none";
+    $("loginModal").style.display = "none";
 }
-
 function openRegister() {
-    document.getElementById("registerPopup").style.display = "flex";
+    $("registerPopup").style.display = "flex";
 }
-
 function closeRegister() {
-    document.getElementById("registerPopup").style.display = "none";
+    $("registerPopup").style.display = "none";
 }
 
 async function registerUser() {
-    const name = document.getElementById("registerName").value.trim();
-    const email = document.getElementById("registerEmail").value.trim();
-    const password = document.getElementById("registerPassword").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+    const name = $("registerName").value.trim();
+    const email = $("registerEmail").value.trim();
+    const password = $("registerPassword").value;
+    const confirmPassword =$("confirmPassword").value;
 
     if (!name || !email || !password || !confirmPassword) {
         alert("Please fill all fields.");
@@ -147,7 +155,7 @@ async function registerUser() {
         return;
     }
     try {
-        const result = await apiRequest("/api/register", {
+        const result = await apiRequest(API.REGISTER, {
             method: "POST",
             body: JSON.stringify({ name, email, password })
         });
@@ -160,11 +168,15 @@ async function registerUser() {
 }
 
 async function loginUser() {
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
+    const email = $("loginEmail").value.trim();
+    const password =$("loginPassword").value;
 
     try {
-        await apiRequest("/api/login", { method: "POST", body: JSON.stringify({ email, password }) });
+      
+        await apiRequest(API.LOGIN, {
+    method: "POST",
+    body: JSON.stringify({ email, password })
+});
         closeLogin();
         window.location.href = "dashboard.html";
     } catch (error) {
@@ -174,26 +186,26 @@ async function loginUser() {
 
 async function logoutUser() {
     try {
-        await apiRequest("/api/logout", { method: "POST" });
+        await apiRequest(API.LOGOUT, { method: "POST" });
     } catch (error) {
         alert(error.message);
         return;
     }
-    document.getElementById("loginBtn").style.display = "inline-block";
-    document.getElementById("registerBtn").style.display = "inline-block";
-    document.getElementById("welcomeUser").style.display = "none";
-    document.getElementById("logoutBtn").style.display = "none";
+    $("loginBtn").style.display = "inline-block";
+    $("registerBtn").style.display = "inline-block";
+    $("welcomeUser").style.display = "none";
+    $("logoutBtn").style.display = "none";
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const { user } = await apiRequest("/api/session", { method: "GET" });
+        const { user } = await apiRequest(API.SESSION, { method: "GET" });
         if (!user) return;
-        document.getElementById("loginBtn").style.display = "none";
-        document.getElementById("registerBtn").style.display = "none";
-        document.getElementById("welcomeUser").style.display = "inline";
-        document.getElementById("logoutBtn").style.display = "inline";
-        document.getElementById("welcomeUser").textContent = `Welcome ${user.name}`;
+        $("loginBtn").style.display = "none";
+        $("registerBtn").style.display = "none";
+        $("welcomeUser").style.display = "inline";
+        $("logoutBtn").style.display = "inline";
+        $("welcomeUser").textContent = `Welcome ${user.name}`;
     } catch {
         // The app must be served through `node server.js` for authentication to work.
     }
