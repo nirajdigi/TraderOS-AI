@@ -174,6 +174,20 @@ if (winRate >= 70) {
 } else {
     winRateElement.style.color = "#ef4444";   // Red
 }
+
+// ===========================================
+// Sprint 1 v1.0
+// Update AI Insights after Dashboard Render
+// ===========================================
+
+updateAIInsights(
+    trades.length,
+    totalProfit,
+    totalInvestment,
+    wins,
+    losses
+);  //rendor close
+
     document.getElementById("winStats").innerHTML =
     `🟢 ${wins} Wins • 🔴 ${losses} Loss`;
     document.getElementById("avgProfit").textContent = currency.format(trades.length ? totalProfit / trades.length : 0);
@@ -366,5 +380,124 @@ if (menuBtn && sidebar && overlay) {
         sidebar.classList.remove("active");
         overlay.classList.remove("show");
     });
+}
+
+// =======================================================
+// FEATURE : AI INSIGHTS ENGINE
+// VERSION : v1.0
+// SPRINT  : 1
+// AUTHOR  : Nk + ChatGPT
+// PURPOSE : Generate AI Score & Recommendations
+// =======================================================
+
+/* =======================================================
+   AI INSIGHTS ENGINE START
+======================================================= */
+
+function updateAIInsights(
+    totalTrades,
+    totalProfit,
+    totalInvestment,
+    wins,
+    losses
+) {
+
+    // AI Elements
+    const aiScore = document.getElementById("aiScore");
+    const winRateStatus = document.getElementById("winRateStatus");
+    const riskStatus = document.getElementById("riskStatus");
+    const warningStatus = document.getElementById("warningStatus");
+    const aiRecommendation = document.getElementById("aiRecommendation");
+
+    let score = 50;
+
+    // ===========================
+    // Win Rate Analysis
+    // ===========================
+
+    if (winRate >= 80) {
+        score += 25;
+        winRateStatus.textContent = "Excellent";
+    }
+    else if (winRate >= 60) {
+        score += 15;
+        winRateStatus.textContent = "Good";
+    }
+    else {
+        winRateStatus.textContent = "Needs Improvement";
+    }
+
+    // ===========================
+    // Profit Analysis
+    // ===========================
+
+    if (totalProfit > 0) {
+        score += 15;
+    }
+
+    // ===========================
+    // Trade Count
+    // ===========================
+
+    if (totalTrades >= 10) {
+        score += 10;
+    }
+
+    // ===========================
+    // Final Score
+    // ===========================
+
+    score = Math.min(score, 100);
+
+    aiScore.textContent = score;
+
+    // ===========================
+    // Risk
+    // ===========================
+
+    if (score >= 80) {
+
+        riskStatus.textContent = "Controlled";
+
+        warningStatus.textContent =
+            "No major issues detected";
+
+        aiRecommendation.textContent =
+            "Excellent performance. Continue following your trading plan.";
+
+    }
+
+    else if (score >= 60) {
+
+        riskStatus.textContent = "Moderate";
+
+        warningStatus.textContent =
+            "Review recent trades.";
+
+        aiRecommendation.textContent =
+            "Maintain discipline and improve risk management.";
+
+    }
+
+    else {
+
+        riskStatus.textContent = "High";
+
+        warningStatus.textContent =
+            "High trading risk detected.";
+
+        aiRecommendation.textContent =
+            "Reduce position size and avoid emotional trading.";
+
+    }
 
 }
+
+/* =======================================================
+   AI INSIGHTS ENGINE END
+======================================================= */
+// ================================
+// Initialize AI Insights
+// ================================
+
+//updateAIInsights();
