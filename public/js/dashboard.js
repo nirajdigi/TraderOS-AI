@@ -145,6 +145,38 @@ function render() {
     const profits = trades.map(getProfit);
     const totalProfit = profits.reduce((sum, profit) => sum + profit, 0);
     const totalInvestment = trades.reduce((sum, trade) => sum + Number(trade.entry) * Number(trade.quantity), 0);
+    
+    // =======================================================
+// FEATURE : PORTFOLIO SUMMARY ENGINE
+// VERSION : v1.4
+// =======================================================
+
+const portfolioValue = totalInvestment + totalProfit;
+
+const portfolioPercent =
+    totalInvestment > 0
+        ? ((totalProfit / totalInvestment) * 100).toFixed(2)
+        : "0.00";
+
+document.getElementById("portfolioValue").textContent =
+    currency.format(portfolioValue);
+
+const portfolioPnLElement =
+    document.getElementById("portfolioPnL");
+
+portfolioPnLElement.textContent =
+    `P&L : ${currency.format(totalProfit)} (${portfolioPercent}%)`;
+
+portfolioPnLElement.style.color =
+    totalProfit >= 0 ? "#22c55e" : "#ef4444";
+
+document.getElementById("portfolioStatus").textContent =
+    "🟢 Live Portfolio";
+
+// =======================================================
+// END
+// =======================================================
+
     const wins = profits.filter((profit) => profit > 0).length;
     const losses = profits.filter((profit) => profit <= 0).length;
 
