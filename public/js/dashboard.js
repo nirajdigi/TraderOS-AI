@@ -380,6 +380,21 @@ if (menuBtn && sidebar && overlay) {
         sidebar.classList.remove("active");
         overlay.classList.remove("show");
     });
+
+    // =======================================================
+// FEATURE : DESKTOP COLLAPSE SIDEBAR
+// VERSION : v1.3
+// =======================================================
+
+menuBtn.addEventListener("dblclick", () => {
+
+    sidebar.classList.toggle("collapsed");
+
+});
+
+// =======================================================
+// END
+// =======================================================
 }
 
 // =======================================================
@@ -500,4 +515,61 @@ function updateAIInsights(
 // Initialize AI Insights
 // ================================
 
-//updateAIInsights();
+// =======================================================
+// FEATURE : PRO UPGRADE MODAL
+// VERSION : v1.3
+// SPRINT : 2.3
+// AUTHOR : Nk + ChatGPT
+// PURPOSE : Lock Premium Modules
+// =======================================================
+
+const upgradeModal = document.getElementById("upgradeModal");
+const closeUpgradeModal = document.getElementById("closeUpgradeModal");
+const maybeLaterBtn = document.getElementById("maybeLaterBtn");
+const upgradeNowBtn = document.getElementById("upgradeNowBtn");
+
+const lockedFeatures = document.querySelectorAll(".locked-feature");
+
+lockedFeatures.forEach((item) => {
+
+    item.addEventListener("click", (e) => {
+
+        e.preventDefault();
+
+        upgradeModal.style.display = "flex";
+
+    });
+
+});
+
+function closeUpgradePopup(){
+
+    upgradeModal.style.display = "none";
+
+}
+
+closeUpgradeModal.addEventListener("click", closeUpgradePopup);
+
+maybeLaterBtn.addEventListener("click", closeUpgradePopup);
+
+upgradeModal.addEventListener("click", (e)=>{
+
+    if(e.target===upgradeModal){
+
+        closeUpgradePopup();
+
+    }
+
+});
+
+upgradeNowBtn.addEventListener("click", ()=>{
+
+    closeUpgradePopup();
+
+    showToast("🚀 TraderOS AI Pro is coming soon!", "info");
+
+});
+
+// =======================================================
+// END : PRO UPGRADE MODAL
+// =======================================================

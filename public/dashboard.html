@@ -12,20 +12,115 @@
     
   <button id="menuBtn" class="menu-btn">☰</button>
 
-<div class="sidebar active " id="sidebar">
+<!-- =======================================================
+     FEATURE : PREMIUM SIDEBAR
+     VERSION : v1.2
+     SPRINT  : 2.1
+     AUTHOR  : Nk
+     PURPOSE : Future SaaS Navigation
+======================================================= -->
 
-<h2>TraderOS AI</h2>
+<div class="sidebar active" id="sidebar">
+<!-- =======================================================
+     FEATURE : BRAND LOGO
+     VERSION : v1.3
+     PURPOSE : Premium Branding
+======================================================= -->
 
-<ul>
-<li>🏠 Dashboard</li>
-<li>📊 Risk Calculator</li>
-<li>📈 Position Size</li>
-<li>📒 Trade Journal</li>
-<li>📉 Analytics</li>
-<li>⚙ Settings</li>
-</ul>
+<div class="sidebar-logo">
+
+    <h2>
+        🤖 TraderOS AI
+    </h2>
+
+    <p class="logo-subtitle">
+        AI Trading Workspace
+    </p>
+
+    <span class="plan-badge">
+        🟢 FREE PLAN
+    </span>
 
 </div>
+
+<!-- =======================================================
+     END : BRAND LOGO
+======================================================= -->
+
+    <!-- Sidebar Navigation -->
+    <ul class="sidebar-menu">
+
+        <li class="active-menu">🏠 Dashboard</li>
+
+        <li>📒 Trade Journal</li>
+
+        <li>📊 Analytics</li>
+
+        <li class="locked-feature">
+            <a href="#">
+        💼 Portfolio
+        <span class="lock-badge">🔒</span>
+            </a>
+        </li>
+        <li>⚠ Risk Calculator</li>
+
+        <li>📈 Position Size</li>
+
+        <li>🤖 AI Insights</li>
+
+       <li class="locked-feature">
+           <a href="#">
+        ⭐ Watchlist
+        <span class="lock-badge">🔒</span>
+           </a>
+        </li>
+   <li class="locked-feature">
+    <a href="#">
+        📰 Market Hub
+        <span class="lock-badge">🔒</span>
+    </a>
+</li>
+
+   <li class="locked-feature">
+    <a href="#">
+      🎓 Learning Hub
+        <span class="lock-badge">🔒</span>
+    </a>
+</li>
+
+   <li class="locked-feature">
+    <a href="#">
+        🎬 Creator Hub
+        <span class="lock-badge">🔒</span>
+    </a>
+</li>
+        <li>⚙ Settings</li>
+
+    </ul>
+
+    <!-- Sidebar Footer -->
+
+    <div class="sidebar-footer">
+
+        <div class="user-box">
+
+            <strong id="sidebarUser">Niraj</strong>
+
+            <small>Free Plan</small>
+
+        </div>
+
+        <button id="upgradeBtn">
+            🚀 Upgrade Pro
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =======================================================
+     END : PREMIUM SIDEBAR
+======================================================= -->
 
 <div class="main">
 
@@ -261,6 +356,63 @@
 
 
 </div> <!--main-->
+
+
+<!-- =======================================================
+     FEATURE : PRO UPGRADE MODAL
+     VERSION : v1.3
+     SPRINT : 2.3
+     AUTHOR : Nk
+     PURPOSE : Show upgrade popup for locked modules
+======================================================= -->
+
+<div id="upgradeModal" class="upgrade-modal">
+
+    <div class="upgrade-content">
+
+        <span id="closeUpgradeModal" class="close-upgrade">&times;</span>
+
+        <h2>🚀 Upgrade to TraderOS AI Pro</h2>
+
+        <p>Unlock all premium trading features.</p>
+
+        <ul class="pro-features">
+
+            <li>✅ Portfolio Manager</li>
+
+            <li>✅ Watchlist</li>
+
+            <li>✅ AI Trading Coach</li>
+
+            <li>✅ Market Hub</li>
+
+            <li>✅ Learning Hub</li>
+
+            <li>✅ Creator Hub</li>
+
+            <li>✅ Future Premium Updates</li>
+
+        </ul>
+
+        <div class="upgrade-actions">
+
+            <button id="upgradeNowBtn" class="upgrade-now-btn">
+                🚀 Upgrade Now
+            </button>
+
+            <button id="maybeLaterBtn" class="later-btn">
+                Maybe Later
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =======================================================
+     END : PRO UPGRADE MODAL
+======================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
