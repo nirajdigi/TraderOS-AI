@@ -164,8 +164,16 @@ document.getElementById("portfolioValue").textContent =
 const portfolioPnLElement =
     document.getElementById("portfolioPnL");
 
-portfolioPnLElement.textContent =
-    `P&L : ${currency.format(totalProfit)} (${portfolioPercent}%)`;
+const sign = totalProfit >= 0 ? "+" : "";
+const pnlClass = totalProfit >= 0 ? "pnl-positive" : "pnl-negative";
+
+portfolioPnLElement.innerHTML = `
+<span class="pnl-label">P&L :</span>
+<span class="${pnlClass}">
+    ${sign}${currency.format(totalProfit)}
+    (${sign}${portfolioPercent}%)
+</span>
+`;// new update
 
 portfolioPnLElement.style.color =
     totalProfit >= 0 ? "#22c55e" : "#ef4444";
@@ -433,7 +441,7 @@ menuBtn.addEventListener("dblclick", () => {
 // FEATURE : AI INSIGHTS ENGINE
 // VERSION : v1.0
 // SPRINT  : 1
-// AUTHOR  : Nk + ChatGPT
+// AUTHOR  : Nk
 // PURPOSE : Generate AI Score & Recommendations
 // =======================================================
 
@@ -551,7 +559,7 @@ function updateAIInsights(
 // FEATURE : PRO UPGRADE MODAL
 // VERSION : v1.3
 // SPRINT : 2.3
-// AUTHOR : Nk + ChatGPT
+// AUTHOR : Nk
 // PURPOSE : Lock Premium Modules
 // =======================================================
 
