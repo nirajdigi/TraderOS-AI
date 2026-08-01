@@ -9,6 +9,8 @@ const tradeModal = document.getElementById("tradeModal");
 const closeTradeBtn = document.getElementById("closeTradeBtn");
 const saveTradeBtn = document.getElementById("saveTradeBtn");
 const tradeTableBody = document.getElementById("tradeTableBody");
+
+
 let editIndex = -1;
 let trades = [];
 
@@ -188,8 +190,19 @@ document.getElementById("portfolioStatus").textContent =
     const wins = profits.filter((profit) => profit > 0).length;
     const losses = profits.filter((profit) => profit <= 0).length;
 
-    document.getElementById("totalTrades").textContent = trades.length;
-    document.getElementById("totalProfit").textContent = currency.format(totalProfit);
+   animateValue(
+    "totalTrades",
+    0,
+    trades.length,
+    700
+);
+    animateValue(
+    "totalProfit",
+    0,
+    totalProfit,
+    900,
+    value => currency.format(value)
+);
     const totalProfitElement = document.getElementById("totalProfit");
 
 if (totalProfit >= 0) {
@@ -197,7 +210,13 @@ if (totalProfit >= 0) {
 } else {
     totalProfitElement.style.color = "#ef4444";   // Red
 }
-    document.getElementById("totalInvestment").textContent = currency.format(totalInvestment);
+    animateValue(
+    "totalInvestment",
+    0,
+    totalInvestment,
+    1000,
+    value => currency.format(value)
+);
     document.getElementById("winRate").textContent = `${trades.length ? Math.round((wins / trades.length) * 100) : 0}%`;
     const winRate = trades.length
     ? Math.round((wins / trades.length) * 100)
@@ -205,7 +224,13 @@ if (totalProfit >= 0) {
 
 const winRateElement = document.getElementById("winRate");
 
-winRateElement.textContent = `${winRate}%`;
+animateValue(
+    "winRate",
+    0,
+    winRate,
+    700,
+    value => `${value}%`
+);
 
 if (winRate >= 70) {
     winRateElement.style.color = "#22c55e";   // Green
@@ -243,6 +268,8 @@ if (avgProfit >= 0) {
 }
     document.getElementById("bestTrade").textContent = currency.format(profits.length ? Math.max(...profits) : 0);
     document.getElementById("worstTrade").textContent = currency.format(profits.length ? Math.min(...profits) : 0);
+
+
 const worstTradeValue = profits.length ? Math.min(...profits) : 0;
 
 const worstTradeElement = document.getElementById("worstTrade");
@@ -252,6 +279,29 @@ if (worstTradeValue < 0) {
 } else {
     worstTradeElement.style.color = "#22c55e";
 }
+
+// 👇 YAHAN ADD KARNA HAI
+
+let streak = 0;
+let maxStreak = 0;
+
+trades.forEach((trade) => {
+
+    if (getProfit(trade) > 0) {
+
+        streak++;
+        maxStreak = Math.max(maxStreak, streak);
+
+    } else {
+        streak = 0;
+    }
+
+});
+
+document.getElementById("winStreak").textContent =
+`${maxStreak} Wins`;
+
+// 👇 Iske baad ye code already hai
     tradeTableBody.innerHTML = trades.map((trade, index) => `
         <tr>
             <td>${escapeHtml(String(trade.symbol || ""))}</td>
@@ -263,15 +313,26 @@ if (worstTradeValue < 0) {
                 ${escapeHtml(String(trade.type || "BUY"))}
                 </span>
             </td>
-            <td class="${getProfit(trade) >= 0 ? 'profit' : 'loss'}">
-                 ${currency.format(getProfit(trade))}
-            </td>
+            <td>
+    ${
+        getProfit(trade) >= 0
+        ? `<span class="profit-badge">
+                +${currency.format(getProfit(trade))}
+           </span>`
+        : `<span class="loss-badge">
+                -${currency.format(Math.abs(getProfit(trade)))}
+           </span>`
+    }
+</td>
             <td>${formatTradeDate(trade.date)}</td>
             <td class="action-buttons">
                 <button class="edit-btn" type="button" onclick="editTrade(${index})"> ✏ Edit</button>
                 <button class="delete-btn" type="button" onclick="deleteTrade(${index})"> 🗑 Delete</button>
             </td>
         </tr>`).join("");
+// ✅ Trade Counter
+        document.getElementById("tradeCount").textContent =
+    `Showing ${trades.length} Trade${trades.length !== 1 ? "s" : ""}`;
 
     applyFilters();
     renderCharts(profits);
@@ -293,6 +354,23 @@ function applyFilters() {
 function searchTrade() { applyFilters(); }
 function filterTradeByDate() { applyFilters(); }
 function filterTradeType() { applyFilters(); }
+function sortTrades() {
+
+    const sortValue = document.getElementById("sortTrade").value;
+
+    if (sortValue === "newest") {
+
+        trades.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    } else {
+
+        trades.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    }
+
+    render();
+
+}//NEW ADD
 
 function renderCharts(profits) {
     if (typeof Chart === "undefined") return;
@@ -346,6 +424,8 @@ function exportPDF() {
             20,
             y
         );
+
+    
         y += 10;
     });
     doc.save("TraderOS_Report.pdf");
@@ -387,6 +467,45 @@ async function initialiseDashboard() {
 }
 
 initialiseDashboard();
+
+/* =======================================================
+FEATURE : ANIMATED DASHBOARD NUMBERS
+VERSION : v1.5
+SPRINT : Dashboard Polish
+AUTHOR : Nk + ChatGPT
+======================================================= */
+
+function animateValue(elementId, start, end, duration, formatter = value => value){
+
+    const element = document.getElementById(elementId);
+
+    if(!element) return;
+
+    const range = end - start;
+
+    const startTime = performance.now();
+
+    function update(currentTime){
+
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+
+        const value = start + (range * progress);
+
+        element.textContent = formatter(Math.round(value));
+
+        if(progress < 1){
+
+            requestAnimationFrame(update);
+
+        }
+
+    }
+
+    requestAnimationFrame(update);
+
+}
+
+/* END ANIMATION */
 
 function showToast(message, type = "success") {
 

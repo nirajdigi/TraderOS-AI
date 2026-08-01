@@ -212,13 +212,37 @@
 
 </div>
 
-<!-- END : PORTFOLIO SUMMARY -->
 </div>
-
+<!-- END : PORTFOLIO SUMMARY -->
 
 <h2>Trade Journal</h2>
-<div class="toolbar">
+  
+   <div class="trade-stats">
 
+    <div class="stat-box">
+        <h4>📈 Best Trade</h4>
+        <span id="bestTrade">₹0</span>
+    </div>
+
+    <div class="stat-box">
+        <h4>📉 Worst Trade</h4>
+        <span id="worstTrade">₹0</span>
+    </div>
+
+    <div class="stat-box">
+        <h4>💰 Avg Profit</h4>
+        <span id="avgProfit">₹0</span>
+    </div>
+
+    <div class="stat-box">
+        <h4>🎯 Win Streak</h4>
+        <span id="winStreak">0</span>
+    </div>
+
+</div>  
+
+<div class="toolbar">
+ <!-- Left side -->
     <div class="toolbar-group">
         <input
             type="text"
@@ -247,16 +271,26 @@
     </div>
 
     <div class="toolbar-group">
-        <button onclick="exportCSV()">
-            📥 Export CSV
-        </button>
+        <select
+            id="sortTrade"
+            onchange="sortTrades()">
+
+            <option value="newest">🆕 Newest</option>
+            <option value="oldest">📜 Oldest</option>
+
+        </select>
     </div>
 
-    <div class="toolbar-group">
-        <button id="exportPDFBtn" onclick="exportPDF()">
-            📄 Export PDF
-        </button>
-    </div>
+   <!-- Right Side -->
+    <div class="toolbar-actions">
+
+    <button onclick="exportCSV()">📥 Export CSV</button>
+
+    <button id="exportPDFBtn" onclick="exportPDF()">📄 Export PDF</button>
+
+    <span id="tradeCount">Showing 5 Trades</span>
+
+</div>
 
 </div>
 
@@ -282,21 +316,6 @@
         <canvas id="pieChart"></canvas>
     </div>
 
-</div>
-
-<div class="card">
-    <h3>Average Profit</h3>
-    <h2 id="avgProfit">₹0</h2>
-</div>
-
-<div class="card">
-    <h3>Best Trade</h3>
-    <h2 id="bestTrade">₹0</h2>
-</div>
-
-<div class="card">
-    <h3>Worst Trade</h3>
-    <h2 id="worstTrade">₹0</h2>
 </div>
 
 <!-- ========================= -->
