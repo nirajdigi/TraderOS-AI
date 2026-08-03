@@ -301,6 +301,60 @@ trades.forEach((trade) => {
 document.getElementById("winStreak").textContent =
 `${maxStreak} Wins`;
 
+// ======================================
+// Analytics Summary
+// ======================================
+
+// ROI
+const roi =
+    totalInvestment > 0
+        ? ((totalProfit / totalInvestment) * 100).toFixed(2)
+        : "0.00";
+
+document.getElementById("roiValue").textContent =
+    roi + "%";
+
+// Accuracy
+document.getElementById("accuracyValue").textContent =
+    `${winRate}%`;
+
+// Avg Risk : Reward
+const winningTrades = profits.filter(p => p > 0);
+const losingTrades = profits.filter(p => p < 0);
+
+const avgWin =
+    winningTrades.length
+        ? winningTrades.reduce((a,b)=>a+b,0)/winningTrades.length
+        : 0;
+
+const avgLoss =
+    losingTrades.length
+        ? Math.abs(losingTrades.reduce((a,b)=>a+b,0)/losingTrades.length)
+        : 0;
+
+document.getElementById("rrValue").textContent =
+avgLoss ? `1 : ${(avgWin/avgLoss).toFixed(1)}` : "1 : 0";
+
+// Current Win Streak
+let currentStreak = 0;
+
+for(let i = trades.length - 1; i >= 0; i--){
+
+    if(getProfit(trades[i]) > 0){
+
+        currentStreak++;
+
+    }else{
+
+        break;
+
+    }
+
+}
+
+document.getElementById("currentStreak").textContent =
+`${currentStreak} Wins`;
+
 // 👇 Iske baad ye code already hai
     tradeTableBody.innerHTML = trades.map((trade, index) => `
         <tr>
@@ -335,8 +389,42 @@ document.getElementById("winStreak").textContent =
     `Showing ${trades.length} Trade${trades.length !== 1 ? "s" : ""}`;
 
     applyFilters();
+
+    // ===== Top Gainer / Top Loser =====
+
+if (trades.length > 0) {
+
+    const tradeProfits = trades.map(trade => ({
+        symbol: trade.symbol,
+        profit: getProfit(trade)
+    }));
+
+    const topGainer = tradeProfits.reduce((a, b) =>
+        a.profit > b.profit ? a : b
+    );
+
+    const topLoser = tradeProfits.reduce((a, b) =>
+        a.profit < b.profit ? a : b
+    );
+
+    document.getElementById("topGainerSymbol").textContent =
+        topGainer.symbol;
+
+    document.getElementById("topGainerProfit").textContent =
+        `₹${topGainer.profit.toLocaleString()}`;
+
+    document.getElementById("topLoserSymbol").textContent =
+        topLoser.symbol;
+
+    document.getElementById("topLoserProfit").textContent =
+        `₹${topLoser.profit.toLocaleString()}`;
+
+}
+
     renderCharts(profits);
    //rendor ka sara code
+
+   renderMonthlyCalendar();
 }
 
 
@@ -374,7 +462,7 @@ function sortTrades() {
 
 function renderCharts(profits) {
     if (typeof Chart === "undefined") return;
-    ["profitChart", "barChart", "pieChart"].forEach((id) => {
+    ["profitChart", "barChart", "pieChart", "equityChart"].forEach((id) => {
         const chart = Chart.getChart(id);
         if (chart) chart.destroy();
     });
@@ -383,8 +471,152 @@ function renderCharts(profits) {
     const losses = profits.filter((profit) => profit <= 0).length;
     const options = { responsive: true, maintainAspectRatio: false };
     new Chart(document.getElementById("profitChart"), { type: "line", data: { labels, datasets: [{ label: "Profit", data: profits, tension: 0.3 }] }, options });
-    new Chart(document.getElementById("barChart"), { type: "bar", data: { labels, datasets: [{ label: "Profit", data: profits }] }, options });
-    new Chart(document.getElementById("pieChart"), { type: "pie", data: { labels: ["Win", "Loss"], datasets: [{ data: [wins, losses] }] }, options });
+    
+  const barColors = profits.map(value =>
+    value >= 0 ? "#22c55e" : "#ef4444"
+);
+
+new Chart(document.getElementById("barChart"), {
+    type: "bar",
+    data: {
+        labels,   // ✅ Ye use karo
+        datasets: [{
+            label: "Profit",
+            data: profits,
+            backgroundColor: barColors,
+            borderRadius: 8,
+            borderSkipped: false
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1200
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: "#ffffff"
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                      color: "#cbd5e1",
+                      autoSkip: false,
+                      maxRotation: 0,
+                      minRotation: 0,
+               font: {
+                    size: 10
+                   }
+                },
+                grid: {
+                    color: "rgba(255,255,255,.05)"
+                }
+            },
+            y: {
+                ticks: {
+                    color: "#cbd5e1"
+                },
+                grid: {
+                    color: "rgba(255,255,255,.05)"
+                }
+            }
+        }
+        
+    }
+});
+    
+    const buyCount = trades.filter(t => t.type === "BUY").length;
+const sellCount = trades.filter(t => t.type === "SELL").length;
+
+new Chart(document.getElementById("pieChart"), {
+    type: "doughnut",
+    data: {
+        labels: ["BUY", "SELL"],
+        datasets: [{
+            data: [buyCount, sellCount],
+            backgroundColor: ["#22c55e", "#ef4444" ],
+                borderWidth: 0,
+                hoverOffset: 15
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout:"55%",
+        plugins: {
+            legend: {
+                labels: {
+                    color: "#fff"
+                }
+            }
+        }
+    }
+});
+
+// ===== Equity Curve =====
+
+let cumulative = [];
+let total = 0;
+
+profits.forEach(p => {
+    total += p;
+    cumulative.push(total);
+});
+
+new Chart(document.getElementById("equityChart"), {
+    type: "line",
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Equity",
+            data: cumulative,
+            borderColor: "#22c55e",
+            backgroundColor: "rgba(34,197,94,.15)",
+            fill: true,
+            tension: 0.35,
+            pointRadius: 4,
+            pointHoverRadius: 7
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1500
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: "#ffffff",
+                    display: false
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: "#cbd5e1"
+                },
+                grid: {
+                    color: "rgba(255,255,255,.05)"
+                }
+            },
+            y: {
+                ticks: {
+                    color: "#cbd5e1"
+                },
+                grid: {
+                    color: "rgba(255,255,255,.05)"
+                }
+            }
+        }
+    }
+});
+
 }
 
 function exportCSV() {
@@ -472,7 +704,7 @@ initialiseDashboard();
 FEATURE : ANIMATED DASHBOARD NUMBERS
 VERSION : v1.5
 SPRINT : Dashboard Polish
-AUTHOR : Nk + ChatGPT
+AUTHOR : Nk 
 ======================================================= */
 
 function animateValue(elementId, start, end, duration, formatter = value => value){
@@ -732,3 +964,130 @@ upgradeNowBtn.addEventListener("click", ()=>{
 // =======================================================
 // END : PRO UPGRADE MODAL
 // =======================================================
+
+function renderMonthlyCalendar() {
+
+    const calendar = document.getElementById("calendarGrid");
+
+    if (!calendar) return;
+
+    calendar.innerHTML = "";
+
+    const dailyProfit = {};
+
+    // Calculate daily P&L
+    trades.forEach(trade => {
+
+        const day = new Date(trade.date).getDate();
+
+        if (!dailyProfit[day]) {
+            dailyProfit[day] = 0;
+        }
+
+        dailyProfit[day] += getProfit(trade);
+
+    });
+
+    for (let day = 1; day <= 31; day++) {
+
+        const cell = document.createElement("div");
+
+        cell.classList.add("calendar-day");
+
+        if (dailyProfit[day] > 0) {
+
+            cell.classList.add("calendar-profit");
+
+        } else if (dailyProfit[day] < 0) {
+
+            cell.classList.add("calendar-loss");
+
+        } else {
+
+            cell.classList.add("calendar-empty");
+
+        }
+
+        cell.innerHTML = `
+<div class="day-number">${day}</div>
+<div class="day-profit">
+    ${
+        dailyProfit[day]
+        ? (dailyProfit[day] > 0
+            ? "+₹" + Math.round(dailyProfit[day]/1000) + "K"
+            : "-₹" + Math.round(Math.abs(dailyProfit[day])/1000) + "K")
+        : ""
+    }
+</div>
+`;
+
+       if (dailyProfit[day] !== undefined) {
+
+    cell.title =
+        `Day ${day}\nProfit: ₹${dailyProfit[day].toLocaleString()}`;
+
+    // 👇 ADD THIS
+    cell.style.cursor = "pointer";
+
+    cell.onclick = () => openCalendarModal(day);
+
+}
+
+calendar.appendChild(cell);
+    }
+
+}
+
+// ===============================
+// Calendar Trade Modal
+// ===============================
+
+function openCalendarModal(day) {
+
+    const modal = document.getElementById("calendarTradeModal");
+    const title = document.getElementById("tradeModalDate");
+    const body = document.getElementById("tradeModalBody");
+
+    title.innerHTML = `📅 Trades - ${day}`;
+
+    const dayTrades = trades.filter(trade => {
+        const tradeDay = new Date(trade.date).getDate();
+        return tradeDay == day;
+    });
+
+    if(dayTrades.length === 0){
+        body.innerHTML = "<p>No trades found for this day.</p>";
+    }else{
+
+        body.innerHTML = dayTrades.map(trade => `
+
+            <div class="trade-item">
+
+                <h3>${trade.symbol}</h3>
+
+                <p><b>Type:</b> ${trade.type}</p>
+
+                <p><b>Entry:</b> ₹${trade.entry}</p>
+
+                <p><b>Exit:</b> ₹${trade.exit}</p>
+
+                <p><b>Qty:</b> ${trade.quantity}</p>
+
+                <p><b>Profit:</b>
+                <span style="color:${getProfit(trade)>=0 ? '#22c55e' : '#ef4444'}">
+                ${currency.format(getProfit(trade))}
+                </span>
+                </p>
+
+            </div>
+
+        `).join("");
+
+    }
+
+    modal.style.display="flex";
+}
+
+function closeCalendarModal() {
+    document.getElementById("calendarTradeModal").style.display = "none";
+}

@@ -294,11 +294,71 @@
 
 </div>
 
+<div class="market-insights">
+
+    <div class="insight-card gain">
+        <h4>🟢 Top Gainer</h4>
+        <h2 id="topGainerSymbol">--</h2>
+        <p id="topGainerProfit">₹0</p>
+    </div>
+
+    <div class="insight-card loss">
+        <h4>🔴 Top Loser</h4>
+        <h2 id="topLoserSymbol">--</h2>
+        <p id="topLoserProfit">₹0</p>
+    </div>
+
+</div>
+
+<div class="calendar-card">
+
+    <div class="calendar-header">
+
+        <h3>📅 Monthly Performance</h3>
+
+        <span id="calendarMonth">
+            July 2026
+        </span>
+
+    </div>
+
+    <div id="calendarGrid"
+         class="calendar-grid">
+
+    </div>
+
+</div>
 
 <h2>Analytics</h2>
 <p class="section-subtitle">
     Track your trading performance
 </p>
+
+<!-- Chart -->
+
+<div class="analytics-summary">
+
+    <div class="summary-card">
+        <h4>📈 ROI</h4>
+        <h2 id="roiValue">0%</h2>
+    </div>
+
+    <div class="summary-card">
+        <h4>🎯 Accuracy</h4>
+        <h2 id="accuracyValue">0%</h2>
+    </div>
+
+    <div class="summary-card">
+        <h4>💹 Avg R:R</h4>
+        <h2 id="rrValue">1 : 0</h2>
+    </div>
+
+    <div class="summary-card">
+        <h4>🔥 Current Streak</h4>
+        <h2 id="currentStreak">0</h2>
+    </div>
+
+</div>
 
 <div class="chart-container">
     <canvas id="profitChart"></canvas>
@@ -315,7 +375,13 @@
         <h3>Win vs Loss</h3>
         <canvas id="pieChart"></canvas>
     </div>
+    
+</div>
 
+<!-- 👇 YAHAN ADD KARNA HAI -->
+<div class="chart-card full-width">
+    <h3>📈 Equity Curve</h3>
+    <canvas id="equityChart"></canvas>
 </div>
 
 <!-- ========================= -->
@@ -452,6 +518,21 @@
 
 </div>
 
+
+<!-- Trade Details Modal -->
+<div id="calendarTradeModal" class="trade-modal">
+
+    <div class="trade-modal-content">
+
+        <span class="close-modal" onclick="closeCalendarModal()">&times;</span>
+
+        <h2 id="tradeModalDate">📅 Trade Details</h2>
+
+        <div id="tradeModalBody"></div>
+
+    </div>
+
+</div>
 <!-- =======================================================
      END : PRO UPGRADE MODAL
 ======================================================= -->
