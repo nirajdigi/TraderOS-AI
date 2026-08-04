@@ -971,6 +971,7 @@ function updateAIInsights() {
 
         document.getElementById("bestDay").textContent = "No Data";
         document.getElementById("bestStock").textContent = "No Data";
+        
         document.getElementById("aiSuggestion").textContent =
             "Start adding trades...";
 
@@ -1012,6 +1013,8 @@ function updateAIInsights() {
             stockProfit[a] > stockProfit[b] ? a : b
         );
 
+        
+
     // Best Day
     const bestDay = Object.keys(dayProfit)
         .reduce((a, b) =>
@@ -1021,23 +1024,85 @@ function updateAIInsights() {
     document.getElementById("bestStock").textContent = bestStock;
     document.getElementById("bestDay").textContent = bestDay;
 
-    // AI Suggestion
-    let suggestion = "";
+// Best Trade Type
+const bestTradeType =
+    buyProfit >= sellProfit
+        ? "BUY"
+        : "SELL";
 
-    if (buyProfit > sellProfit) {
+document.getElementById("bestTradeType").textContent =
+    bestTradeType;
 
-        suggestion =
-            "BUY trades are performing better. Focus on BUY setups.";
+    // =====================================
+// Consecutive Loss Detection
+// =====================================
+
+let lossStreak = 0;
+let maxLossStreak = 0;
+
+trades.forEach(trade => {
+
+    if (getProfit(trade) < 0) {
+
+        lossStreak++;
+
+        if (lossStreak > maxLossStreak) {
+
+            maxLossStreak = lossStreak;
+
+        }
 
     } else {
 
-        suggestion =
-            "SELL trades are performing better. Improve SELL strategy.";
+        lossStreak = 0;
 
     }
 
-    document.getElementById("aiSuggestion").textContent =
-        suggestion;
+});
+// =====================================
+// AI Coach Engine v1
+// =====================================
+
+let suggestions = [];
+
+// Rule 1
+if (buyProfit >= sellProfit) {
+
+    suggestions.push("📈 Focus on BUY setups.");
+
+} else {
+
+    suggestions.push("✓ 📈 Improve BUY entries.");
+
+}
+
+// Rule 2
+suggestions.push("✓ ⚖ Keep risk below 2%");
+
+// Rule 3
+suggestions.push("✓ 🎯 Maintain RR above 1:2");
+
+// -------------------------------------
+// Rule 4 : Consecutive Losses
+// -------------------------------------
+
+if (maxLossStreak >= 3) {
+
+    suggestions.push(
+        "✓ 🚨 You have " +
+        maxLossStreak +
+        " consecutive losing trades."
+    );
+
+    suggestions.push(
+        "✓ 🛑 Take a break and review your journal."
+    );
+
+}
+
+// Update Coach
+document.getElementById("aiSuggestion").innerHTML =
+    suggestions.join("<br>");
 
 }
 

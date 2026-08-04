@@ -2031,6 +2031,10 @@ color:white;
     line-height:1.6;
 }
 
+.insight-box:last-child{
+    grid-column: span 2;
+}
+
 .empty-value{
     color:#9ca3af;
     font-weight:500;
@@ -2043,5 +2047,45 @@ color:white;
 grid-template-columns:1fr;
 
 }
+
+}
+
+.pro-feature{
+
+    position:relative;
+
+    opacity:.75;
+
+}
+
+.pro-feature::after{
+
+    content:"PRO";
+
+    position:absolute;
+
+    top:12px;
+
+    right:12px;
+
+    background:#f59e0b;
+
+    color:#111827;
+
+    padding:3px 8px;
+
+    border-radius:8px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+}
+
+#aiSuggestion{
+
+line-height:1.8;
+
+font-size:15px;
 
 }
