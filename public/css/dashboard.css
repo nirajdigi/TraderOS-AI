@@ -1972,3 +1972,76 @@ color:white;
     overflow-y:auto;
     padding-right:8px;
 }
+
+/* ===========================
+   AI Trade Insights
+=========================== */
+
+.ai-insights-card{
+    margin:30px 0;
+    padding:25px;
+
+    background:#1f2937;
+    border:1px solid #374151;
+    border-radius:18px;
+
+    transition:.3s;
+}
+
+.ai-insights-card:hover{
+    border-color:#22c55e;
+    box-shadow:0 0 20px rgba(34,197,94,.15);
+}
+
+.ai-insights-card h2{
+    color:#ffffff;
+    margin-bottom:20px;
+}
+
+.insights-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 2fr;
+    gap:20px;
+}
+
+.insight-box{
+    background:#111827;
+    border:1px solid #374151;
+    border-radius:14px;
+    padding:20px;
+
+    transition:.3s;
+}
+
+.insight-box:hover{
+    transform:translateY(-5px);
+    border-color:#22c55e;
+}
+
+.insight-box h4{
+    color:#9ca3af;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.insight-box p{
+    color:#ffffff;
+    font-size:18px;
+    font-weight:700;
+    line-height:1.6;
+}
+
+.empty-value{
+    color:#9ca3af;
+    font-weight:500;
+}
+
+@media(max-width:768px){
+
+.insights-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}

@@ -425,6 +425,8 @@ if (trades.length > 0) {
    //rendor ka sara code
 
    renderMonthlyCalendar();
+
+   updateAIInsights();
 }
 
 
@@ -960,6 +962,84 @@ upgradeNowBtn.addEventListener("click", ()=>{
     showToast("🚀 TraderOS AI Pro is coming soon!", "info");
 
 });
+
+//updateAIInsights
+
+function updateAIInsights() {
+
+    if (!trades.length) {
+
+        document.getElementById("bestDay").textContent = "No Data";
+        document.getElementById("bestStock").textContent = "No Data";
+        document.getElementById("aiSuggestion").textContent =
+            "Start adding trades...";
+
+        return;
+    }
+
+    let stockProfit = {};
+    let dayProfit = {};
+    let buyProfit = 0;
+    let sellProfit = 0;
+
+    trades.forEach(trade => {
+
+        const profit = getProfit(trade);
+
+        // Stock Profit
+        stockProfit[trade.symbol] =
+            (stockProfit[trade.symbol] || 0) + profit;
+
+        // Day Profit
+        const dayName = new Date(trade.date)
+            .toLocaleDateString("en-US", { weekday: "long" });
+
+        dayProfit[dayName] =
+            (dayProfit[dayName] || 0) + profit;
+
+        // Trade Type
+        if (trade.type === "BUY") {
+            buyProfit += profit;
+        } else {
+            sellProfit += profit;
+        }
+
+    });
+
+    // Best Stock
+    const bestStock = Object.keys(stockProfit)
+        .reduce((a, b) =>
+            stockProfit[a] > stockProfit[b] ? a : b
+        );
+
+    // Best Day
+    const bestDay = Object.keys(dayProfit)
+        .reduce((a, b) =>
+            dayProfit[a] > dayProfit[b] ? a : b
+        );
+
+    document.getElementById("bestStock").textContent = bestStock;
+    document.getElementById("bestDay").textContent = bestDay;
+
+    // AI Suggestion
+    let suggestion = "";
+
+    if (buyProfit > sellProfit) {
+
+        suggestion =
+            "BUY trades are performing better. Focus on BUY setups.";
+
+    } else {
+
+        suggestion =
+            "SELL trades are performing better. Improve SELL strategy.";
+
+    }
+
+    document.getElementById("aiSuggestion").textContent =
+        suggestion;
+
+}
 
 // =======================================================
 // END : PRO UPGRADE MODAL
