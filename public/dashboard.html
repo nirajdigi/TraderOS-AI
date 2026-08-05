@@ -310,20 +310,27 @@
 
 </div>
 
+<!--Calender Card-->
+
 <div class="calendar-card">
 
     <div class="calendar-header">
 
         <h3>📅 Monthly Performance</h3>
 
-        <span id="calendarMonth">
-            July 2026
-        </span>
+        <div class="calendar-navigation">
+
+            <button id="prevMonth">◀</button>
+
+            <span id="calendarTitle"></span>
+
+            <button id="nextMonth">▶</button>
+
+        </div>
 
     </div>
 
-    <div id="calendarGrid"
-         class="calendar-grid">
+    <div id="calendarGrid" class="calendar-grid">
 
     </div>
 
@@ -502,6 +509,42 @@
 
     <tbody id="tradeTableBody"></tbody>
 </table>
+
+<div class="pagination-container">
+
+    <div class="rows-selector">
+
+        <label>Rows:</label>
+
+        <select id="rowsPerPage">
+
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+
+        </select>
+
+    </div>
+
+    <div id="paginationInfo">
+
+        Showing 1–10 of 0 Trades
+
+    </div>
+
+    <div class="pagination-buttons">
+
+        <button id="prevPage">◀ Prev</button>
+
+        <span id="pageNumbers"></span>
+
+        <button id="nextPage">Next ▶</button>
+
+    </div>
+
+</div>
+
 </div>
 
 
@@ -587,6 +630,7 @@
 
 <div id="overlay" class="overlay"></div>
 
+<script src="js/calendar.js"></script>
 <script src="js/dashboard.js"></script>
 <div id="toast"></div>
 </body>

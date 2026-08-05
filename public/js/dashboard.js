@@ -14,6 +14,13 @@ const tradeTableBody = document.getElementById("tradeTableBody");
 let editIndex = -1;
 let trades = [];
 
+// ==========================
+// Pagination
+// ==========================
+
+let currentPage = 1;
+let rowsPerPage = 10;
+
 function getProfit(trade) {
     const entry = Number(trade.entry);
     const exit = Number(trade.exit);
@@ -695,9 +702,23 @@ async function initialiseDashboard() {
         trades = Array.isArray(storedTrades) ? storedTrades : [];
         document.getElementById("welcomeUser").textContent = `Welcome, ${user.name}`;
         render();
-    } catch {
-        window.location.href = "index.html";
-    }
+
+        function getPaginatedTrades() {
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return trades.slice(start, end);
+
+}
+    } 
+    catch (error) {
+
+    console.error(error);
+    alert(error.message);
+
+}
+
 }
 
 initialiseDashboard();
@@ -983,7 +1004,7 @@ function updateAIInsights() {
     let buyProfit = 0;
     let sellProfit = 0;
 
-    trades.forEach(trade => {
+  trades.forEach(trade => {
 
         const profit = getProfit(trade);
 
@@ -1011,9 +1032,7 @@ function updateAIInsights() {
     const bestStock = Object.keys(stockProfit)
         .reduce((a, b) =>
             stockProfit[a] > stockProfit[b] ? a : b
-        );
-
-        
+        ); 
 
     // Best Day
     const bestDay = Object.keys(dayProfit)
@@ -1109,130 +1128,3 @@ document.getElementById("aiSuggestion").innerHTML =
 // =======================================================
 // END : PRO UPGRADE MODAL
 // =======================================================
-
-function renderMonthlyCalendar() {
-
-    const calendar = document.getElementById("calendarGrid");
-
-    if (!calendar) return;
-
-    calendar.innerHTML = "";
-
-    const dailyProfit = {};
-
-    // Calculate daily P&L
-    trades.forEach(trade => {
-
-        const day = new Date(trade.date).getDate();
-
-        if (!dailyProfit[day]) {
-            dailyProfit[day] = 0;
-        }
-
-        dailyProfit[day] += getProfit(trade);
-
-    });
-
-    for (let day = 1; day <= 31; day++) {
-
-        const cell = document.createElement("div");
-
-        cell.classList.add("calendar-day");
-
-        if (dailyProfit[day] > 0) {
-
-            cell.classList.add("calendar-profit");
-
-        } else if (dailyProfit[day] < 0) {
-
-            cell.classList.add("calendar-loss");
-
-        } else {
-
-            cell.classList.add("calendar-empty");
-
-        }
-
-        cell.innerHTML = `
-<div class="day-number">${day}</div>
-<div class="day-profit">
-    ${
-        dailyProfit[day]
-        ? (dailyProfit[day] > 0
-            ? "+₹" + Math.round(dailyProfit[day]/1000) + "K"
-            : "-₹" + Math.round(Math.abs(dailyProfit[day])/1000) + "K")
-        : ""
-    }
-</div>
-`;
-
-       if (dailyProfit[day] !== undefined) {
-
-    cell.title =
-        `Day ${day}\nProfit: ₹${dailyProfit[day].toLocaleString()}`;
-
-    // 👇 ADD THIS
-    cell.style.cursor = "pointer";
-
-    cell.onclick = () => openCalendarModal(day);
-
-}
-
-calendar.appendChild(cell);
-    }
-
-}
-
-// ===============================
-// Calendar Trade Modal
-// ===============================
-
-function openCalendarModal(day) {
-
-    const modal = document.getElementById("calendarTradeModal");
-    const title = document.getElementById("tradeModalDate");
-    const body = document.getElementById("tradeModalBody");
-
-    title.innerHTML = `📅 Trades - ${day}`;
-
-    const dayTrades = trades.filter(trade => {
-        const tradeDay = new Date(trade.date).getDate();
-        return tradeDay == day;
-    });
-
-    if(dayTrades.length === 0){
-        body.innerHTML = "<p>No trades found for this day.</p>";
-    }else{
-
-        body.innerHTML = dayTrades.map(trade => `
-
-            <div class="trade-item">
-
-                <h3>${trade.symbol}</h3>
-
-                <p><b>Type:</b> ${trade.type}</p>
-
-                <p><b>Entry:</b> ₹${trade.entry}</p>
-
-                <p><b>Exit:</b> ₹${trade.exit}</p>
-
-                <p><b>Qty:</b> ${trade.quantity}</p>
-
-                <p><b>Profit:</b>
-                <span style="color:${getProfit(trade)>=0 ? '#22c55e' : '#ef4444'}">
-                ${currency.format(getProfit(trade))}
-                </span>
-                </p>
-
-            </div>
-
-        `).join("");
-
-    }
-
-    modal.style.display="flex";
-}
-
-function closeCalendarModal() {
-    document.getElementById("calendarTradeModal").style.display = "none";
-}
