@@ -718,6 +718,15 @@ async function initialiseDashboard() {
 
 initialiseDashboard();
 
+// 👇 YAHAN
+function getPaginatedTrades() {
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return trades.slice(start, end);
+
+}
 
 /* =======================================================
 FEATURE : ANIMATED DASHBOARD NUMBERS
