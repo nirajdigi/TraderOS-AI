@@ -124,28 +124,7 @@ saveTradeBtn.addEventListener("click", async () => {
 });
 
 
-function editTrade(index) {
-    editIndex = index;
-    const trade = trades[index];
-    document.getElementById("tradeSymbol").value = trade.symbol;
-    document.getElementById("entryPrice").value = trade.entry;
-    document.getElementById("exitPrice").value = trade.exit;
-    document.getElementById("quantity").value = trade.quantity;
-    document.getElementById("tradeType").value = trade.type;
-    openTradeModal();
-}
 
-async function deleteTrade(index) {
-    if (!confirm("Delete this trade?")) return;
-    try {
-        await apiRequest(`/api/trades/${trades[index].id}`, { method: "DELETE" });
-        trades.splice(index, 1);
-    } catch (error) {
-        alert(error.message);
-        return;
-    }
-    render();
-}
 
 
 function render() {
@@ -258,7 +237,10 @@ updateAIInsights(
     totalInvestment,
     wins,
     losses
-);  //rendor close
+);  
+
+updateAICoach();
+//rendor close
 
     document.getElementById("winStats").innerHTML =
     `🟢 ${wins} Wins • 🔴 ${losses} Loss`;
@@ -430,47 +412,13 @@ if (trades.length > 0) {
 }
 
 renderCharts(profits);
-
 renderTradeTable();
-
 renderMonthlyCalendar();
 
-updateAIInsights();
-
 }
 
 
-function applyFilters() {
-    const search = document.getElementById("searchTrade").value.trim().toLowerCase();
-    const date = document.getElementById("filterDate").value;
-    const type = document.getElementById("tradeTypeFilter").value;
-    [...tradeTableBody.rows].forEach((row, index) => {
-        const trade = trades[index];
-        const matches = String(trade.symbol || "").toLowerCase().includes(search) && (!date || String(trade.date || "").slice(0, 10) === date) && (!type || trade.type === type);
-        row.style.display = matches ? "" : "none";
-    });
-}
-
-function searchTrade() { applyFilters(); }
-function filterTradeByDate() { applyFilters(); }
-function filterTradeType() { applyFilters(); }
-function sortTrades() {
-
-    const sortValue = document.getElementById("sortTrade").value;
-
-    if (sortValue === "newest") {
-
-        trades.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    } else {
-
-        trades.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    }
-
-    render();
-
-}//NEW ADD
+//NEW ADD
 
 function renderCharts(profits) {
     if (typeof Chart === "undefined") return;
@@ -802,128 +750,11 @@ menuBtn.addEventListener("dblclick", () => {
 
 });
 
+}
+
 // =======================================================
 // END
 // =======================================================
-}
-
-// =======================================================
-// FEATURE : AI INSIGHTS ENGINE
-// VERSION : v1.0
-// SPRINT  : 1
-// AUTHOR  : Nk
-// PURPOSE : Generate AI Score & Recommendations
-// =======================================================
-
-/* =======================================================
-   AI INSIGHTS ENGINE START
-======================================================= */
-
-function updateAIInsights(
-    totalTrades,
-    totalProfit,
-    totalInvestment,
-    wins,
-    losses
-) {
-
-    // AI Elements
-    const aiScore = document.getElementById("aiScore");
-    const winRateStatus = document.getElementById("winRateStatus");
-    const riskStatus = document.getElementById("riskStatus");
-    const warningStatus = document.getElementById("warningStatus");
-    const aiRecommendation = document.getElementById("aiRecommendation");
-
-    let score = 50;
-
-    // ===========================
-    // Win Rate Analysis
-    // ===========================
-
-    if (winRate >= 80) {
-        score += 25;
-        winRateStatus.textContent = "Excellent";
-    }
-    else if (winRate >= 60) {
-        score += 15;
-        winRateStatus.textContent = "Good";
-    }
-    else {
-        winRateStatus.textContent = "Needs Improvement";
-    }
-
-    // ===========================
-    // Profit Analysis
-    // ===========================
-
-    if (totalProfit > 0) {
-        score += 15;
-    }
-
-    // ===========================
-    // Trade Count
-    // ===========================
-
-    if (totalTrades >= 10) {
-        score += 10;
-    }
-
-    // ===========================
-    // Final Score
-    // ===========================
-
-    score = Math.min(score, 100);
-
-    aiScore.textContent = score;
-
-    // ===========================
-    // Risk
-    // ===========================
-
-    if (score >= 80) {
-
-        riskStatus.textContent = "Controlled";
-
-        warningStatus.textContent =
-            "No major issues detected";
-
-        aiRecommendation.textContent =
-            "Excellent performance. Continue following your trading plan.";
-
-    }
-
-    else if (score >= 60) {
-
-        riskStatus.textContent = "Moderate";
-
-        warningStatus.textContent =
-            "Review recent trades.";
-
-        aiRecommendation.textContent =
-            "Maintain discipline and improve risk management.";
-
-    }
-
-    else {
-
-        riskStatus.textContent = "High";
-
-        warningStatus.textContent =
-            "High trading risk detected.";
-
-        aiRecommendation.textContent =
-            "Reduce position size and avoid emotional trading.";
-
-    }
-
-}
-
-/* =======================================================
-   AI INSIGHTS ENGINE END
-======================================================= */
-// ================================
-// Initialize AI Insights
-// ================================
 
 // =======================================================
 // FEATURE : PRO UPGRADE MODAL
@@ -980,222 +811,4 @@ upgradeNowBtn.addEventListener("click", ()=>{
 
 });
 
-//updateAIInsights
 
-function updateAIInsights() {
-
-    if (!trades.length) {
-
-        document.getElementById("bestDay").textContent = "No Data";
-        document.getElementById("bestStock").textContent = "No Data";
-        
-        document.getElementById("aiSuggestion").textContent =
-            "Start adding trades...";
-
-        return;
-    }
-
-    let stockProfit = {};
-    let dayProfit = {};
-    let buyProfit = 0;
-    let sellProfit = 0;
-
-  getPaginatedTrades().forEach(trade => {
-
-        const profit = getProfit(trade);
-
-        // Stock Profit
-        stockProfit[trade.symbol] =
-            (stockProfit[trade.symbol] || 0) + profit;
-
-        // Day Profit
-        const dayName = new Date(trade.date)
-            .toLocaleDateString("en-US", { weekday: "long" });
-
-        dayProfit[dayName] =
-            (dayProfit[dayName] || 0) + profit;
-
-        // Trade Type
-        if (trade.type === "BUY") {
-            buyProfit += profit;
-        } else {
-            sellProfit += profit;
-        }
-
-    });
-
-    // Best Stock
-    const bestStock = Object.keys(stockProfit)
-        .reduce((a, b) =>
-            stockProfit[a] > stockProfit[b] ? a : b
-        ); 
-
-    // Best Day
-    const bestDay = Object.keys(dayProfit)
-        .reduce((a, b) =>
-            dayProfit[a] > dayProfit[b] ? a : b
-        );
-
-    document.getElementById("bestStock").textContent = bestStock;
-    document.getElementById("bestDay").textContent = bestDay;
-
-// Best Trade Type
-const bestTradeType =
-    buyProfit >= sellProfit
-        ? "BUY"
-        : "SELL";
-
-document.getElementById("bestTradeType").textContent =
-    bestTradeType;
-
-    // =====================================
-// Consecutive Loss Detection
-// =====================================
-
-let lossStreak = 0;
-let maxLossStreak = 0;
-
-getPaginatedTrades().forEach(trade => {
-
-    if (getProfit(trade) < 0) {
-
-        lossStreak++;
-
-        if (lossStreak > maxLossStreak) {
-
-            maxLossStreak = lossStreak;
-
-        }
-
-    } else {
-
-        lossStreak = 0;
-
-    }
-
-});
-
-// ======================================
-// Update Trade Counter
-// ======================================
-
-function updateTradeCounter() {
-
-    const totalTrades = trades.length;
-
-    const start =
-        totalTrades === 0
-            ? 0
-            : (currentPage - 1) * rowsPerPage + 1;
-
-    const end = Math.min(
-        currentPage * rowsPerPage,
-        totalTrades
-    );
-
-    document.getElementById("paginationInfo").textContent =
-        `Showing ${start}–${end} of ${totalTrades} Trades`;
-
-}
-
-// =====================================
-// AI Coach Engine v1
-// =====================================
-
-let suggestions = [];
-
-// Rule 1
-if (buyProfit >= sellProfit) {
-
-    suggestions.push("📈 Focus on BUY setups.");
-
-} else {
-
-    suggestions.push("✓ 📈 Improve BUY entries.");
-
-}
-
-// Rule 2
-suggestions.push("✓ ⚖ Keep risk below 2%");
-
-// Rule 3
-suggestions.push("✓ 🎯 Maintain RR above 1:2");
-
-// -------------------------------------
-// Rule 4 : Consecutive Losses
-// -------------------------------------
-
-if (maxLossStreak >= 3) {
-
-    suggestions.push(
-        "✓ 🚨 You have " +
-        maxLossStreak +
-        " consecutive losing trades."
-    );
-
-    suggestions.push(
-        "✓ 🛑 Take a break and review your journal."
-    );
-
-}
-
-// Update Coach
-document.getElementById("aiSuggestion").innerHTML =
-    suggestions.join("<br>");
-
-}
-
-// =======================================================
-// END : PRO UPGRADE MODAL
-// =======================================================
-
-// =======================================================
-// Render Trade Table
-// =======================================================
-
-function renderTradeTable() {
-
-    const paginatedTrades = getPaginatedTrades();
-
-    tradeTableBody.innerHTML = paginatedTrades.map((trade, index) => `
-        <tr>
-            <td>${escapeHtml(String(trade.symbol || ""))}</td>
-            <td>${currency.format(Number(trade.entry) || 0)}</td>
-            <td>${currency.format(Number(trade.exit) || 0)}</td>
-            <td>${Number(trade.quantity) || 0}</td>
-
-            <td>
-                <span class="badge ${trade.type === "BUY" ? "buy" : "sell"}">
-                    ${escapeHtml(String(trade.type || "BUY"))}
-                </span>
-            </td>
-
-            <td>
-                ${
-                    getProfit(trade) >= 0
-                    ? `<span class="profit-badge">
-                        +${currency.format(getProfit(trade))}
-                       </span>`
-                    : `<span class="loss-badge">
-                        -${currency.format(Math.abs(getProfit(trade)))}
-                       </span>`
-                }
-            </td>
-
-            <td>${formatTradeDate(trade.date)}</td>
-
-            <td class="action-buttons">
-                <button class="edit-btn" onclick="editTrade(${index})">
-                    ✏ Edit
-                </button>
-
-                <button class="delete-btn" onclick="deleteTrade(${index})">
-                    🗑 Delete
-                </button>
-            </td>
-
-        </tr>
-    `).join("");
-    
- updateTradeCounter();
-}

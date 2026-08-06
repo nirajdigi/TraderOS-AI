@@ -3,61 +3,47 @@
 // TraderOS AI
 // ======================================
 
-let currentDate = new Date();
-let currentMonth = currentDate.getMonth();
-let currentYear = currentDate.getFullYear();
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
 
-function updateCalendarTitle(){
+function updateCalendarTitle() {
 
-    const months = [
-
-        "January","February","March","April",
-        "May","June","July","August",
-        "September","October","November","December"
-
+    const monthNames = [
+        "January", "February", "March", "April",
+        "May", "June", "July", "August",
+        "September", "October", "November", "December"
     ];
 
-    document.getElementById("calendarTitle").textContent =
-        `${months[currentMonth]} ${currentYear}`;
-
+    document.getElementById("calendarMonth").textContent =
+        `${monthNames[currentMonth]} ${currentYear}`;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// 👇 YAHAN ADD KARO
+function previousMonth() {
 
-    document.getElementById("prevMonth")?.addEventListener("click", () => {
+    currentMonth--;
+    if (currentMonth < 0) {
 
-        currentMonth--;
+        currentMonth = 11;
+        currentYear--;
+    }
+    renderMonthlyCalendar();
+}
 
-        if(currentMonth < 0){
+function nextMonth() {
 
-            currentMonth = 11;
+    currentMonth++;
 
-            currentYear--;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
 
-        }
-
-        renderMonthlyCalendar();
-
-    });
-
-    document.getElementById("nextMonth")?.addEventListener("click", () => {
-
-        currentMonth++;
-        if(currentMonth > 11){
-
-            currentMonth = 0;
-
-            currentYear++;
-
-        }
-
-        renderMonthlyCalendar();
-
-    });
-
-});
+    renderMonthlyCalendar();
+}
 
 function renderMonthlyCalendar() {
+
     updateCalendarTitle();
     const calendar = document.getElementById("calendarGrid");
     if (!calendar) return;
@@ -177,3 +163,9 @@ function openCalendarModal(day) {
 function closeCalendarModal() {
     document.getElementById("calendarTradeModal").style.display = "none";
 }
+
+const prevBtn = document.getElementById("prevMonthBtn");
+const nextBtn = document.getElementById("nextMonthBtn");
+
+if (prevBtn) prevBtn.addEventListener("click", previousMonth);
+if (nextBtn) nextBtn.addEventListener("click", nextMonth);
